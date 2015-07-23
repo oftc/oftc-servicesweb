@@ -79,7 +79,6 @@ function accountChannels(req, res, next) {
 }
 
 module.exports.init = function(server) {
-    console.info('hi');
     server.route({
         method: 'GET',
         path: '/login',
