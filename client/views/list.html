@@ -1,0 +1,27 @@
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Setter</th>
+            <th>Target</th>
+            <th>Mask</th>
+            <th>Reason</th>
+            <th>Set</th>
+            <th>Duration</th>
+        </tr>
+    </thead>
+    <tbody data-bind="foreach: list">
+        <tr>
+            <td data-bind="text: setter"></td>
+            <td data-bind="text: target"></td>
+            <td><code data-bind="text: mask"></code></td>
+            <td data-bind="text: reason"></td>
+            <td data-bind="text: moment.unix(time).format('Do MMMM YYYY hh:mm')"></td>
+            <td data-bind="text: duration"></td>
+        </tr>
+    </tbody>
+</table>
+
+<script src="/scripts/lists.js"></script>
+<script>
+	window.ProcessList('{{ channelName }}', '{{ list }}');
+</script>

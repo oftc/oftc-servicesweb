@@ -1,0 +1,77 @@
+<div class="col-xs-6 col-sm-12 col-md-10 col-lg-8">
+    <dl class="dl-horizontal">
+        <dt>Channel</dt>
+        <dd data-bind="text: name"></dd>
+        <dt>Description</dt>
+        <dd data-bind="text: description"></dd>
+        <!-- ko if: email -->
+        <dt >E-mail Address</dt>
+        <dd data-bind="text: email"></dd>
+        <!-- /ko -->
+        <!-- ko if: entryMessage -->
+        <dt>Entry Message</dt>
+        <dd data-bind="text: entryMessage"></dd>
+        <!-- /ko -->
+        <!-- ko if: modeLock -->
+        <dt>Mode Lock</dt>
+        <dd data-bind="text: modeLock"></dd>
+        <!-- /ko -->
+        <!-- ko if: topic -->
+        <dt>Topic</dt>
+        <dd data-bind="text: topic"></dd>
+        <!-- /ko -->
+        <dt>Last Used</dt>
+        <dd data-bind="text: moment.unix(lastUsed()).format('Do MMMM YYYY hh:mm') + ' (' + moment.unix(lastUsed()).fromNow() + ')'"></dd>
+        <dt>Registered</dt>
+        <dd data-bind="text: moment.unix(regTime()).format('Do MMMM YYYY hh:mm') + ' (' + moment.unix(regTime()).fromNow() + ')'"></dd>
+        <dt>Auto Limit</dt>
+        <dd>
+            <span data-bind="css: { glyphicon: true, 'glyphicon-ok text-success': autoLimit, 'glyphicon-remove text-danger': !autoLimit }" aria-hidden="true"></span>
+        </dd>
+        <dt>Auto Op</dt>
+        <dd>
+            <span data-bind="css: { glyphicon: true, 'glyphicon-ok text-success': autoOp, 'glyphicon-remove text-danger': !autoOp }" aria-hidden="true"></span>
+        </dd>
+        <dt>Auto Save</dt>
+        <dd>
+            <span data-bind="css: { glyphicon: true, 'glyphicon-ok text-success': autoSave, 'glyphicon-remove text-danger': !autoSave }" aria-hidden="true"></span>
+        </dd>
+        <dt>Auto Voice</dt>
+        <dd>
+            <span data-bind="css: { glyphicon: true, 'glyphicon-ok text-success': autoVoice, 'glyphicon-remove text-danger': !autoVoice }" aria-hidden="true"></span>
+        </dd>
+        <dt>Expire Bans</dt>
+        <dd>
+            <span data-bind="css: { glyphicon: true, 'glyphicon-ok text-success': expireBans, 'glyphicon-remove text-danger': !expireBans }" aria-hidden="true"></span>
+        </dd>
+        <dt>FloodServ</dt>
+        <dd>
+            <span data-bind="css: { glyphicon: true, 'glyphicon-ok text-success': floodserv, 'glyphicon-remove text-danger': !floodserv }" aria-hidden="true"></span>
+        </dd>
+        <dt>Leave Ops</dt>
+        <dd>
+            <span data-bind="css: { glyphicon: true, 'glyphicon-ok text-success': leaveOps, 'glyphicon-remove text-danger': !leaveOps }" aria-hidden="true"></span>
+        </dd>
+        <dt>Private</dt>
+        <dd>
+            <span data-bind="css: { glyphicon: true, 'glyphicon-ok text-success': private, 'glyphicon-remove text-danger': !private }" aria-hidden="true"></span>
+        </dd>
+        <dt>Restricted</dt>
+        <dd>
+            <span data-bind="css: { glyphicon: true, 'glyphicon-ok text-success': restricted, 'glyphicon-remove text-danger': !restricted }" aria-hidden="true"></span>
+        </dd>
+        <dt>Topic Lock</dt>
+        <dd>
+            <span data-bind="css: { glyphicon: true, 'glyphicon-ok text-success': topicLock, 'glyphicon-remove text-danger': !topicLock }" aria-hidden="true"></span>
+        </dd>
+        <dt>Verbose</dt>
+        <dd>
+            <span data-bind="css: { glyphicon: true, 'glyphicon-ok text-success': verbose, 'glyphicon-remove text-danger': !verbose }" aria-hidden="true"></span>
+        </dd>
+    </dl>
+</div>
+
+<script>
+    window.Channel = '{{ channelName }}';
+</script>
+<script src="/scripts/channel.js"></script>

@@ -1,0 +1,18 @@
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nickname</th>
+            <th>Registered</th>
+            <th>Last Seen</th>
+        </tr>
+    </thead>
+    <tbody data-bind="foreach: nicknames">
+        <tr>
+            <td data-bind="text: nick "></td>
+            <td data-bind="text: moment.unix(reg_time).format('Do MMMM YYYY hh:mm')"></td>
+            <td data-bind="text: moment.unix(last_seen).format('Do MMMM YYYY hh:mm')"></td>
+        </tr>
+    </tbody>
+</table>
+
+<script src="/scripts/nicknames.js"></script>

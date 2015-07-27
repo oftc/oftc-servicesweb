@@ -1,0 +1,16 @@
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Certificate Fingerprint</th>
+            <th>Nickname to change to</th>
+        </tr>
+    </thead>
+    <tbody data-bind="foreach: certificates">
+        <tr>
+            <td><code data-bind="text: fingerprint"></code></td>
+            <td data-bind="text: nick"></td>
+        </tr>
+    </tbody>
+</table>
+
+<script src='/scripts/certificates.js'></script>

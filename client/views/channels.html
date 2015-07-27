@@ -1,0 +1,18 @@
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Channel</th>
+            <th>Access Level</th>
+        </tr>
+    </thead>
+    <tbody data-bind="foreach: channels">
+        <tr>
+            <td>
+                <a data-bind="text: channel, attr: { href: '/channel/' + $parent.channelName(channel) }"></a>
+            </td>
+            <td data-bind="text: $parent.levelText(level)"></td>
+        </tr>
+    </tbody>
+</table>
+
+<script src='/scripts/channels.js'></script>

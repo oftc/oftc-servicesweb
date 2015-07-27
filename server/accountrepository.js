@@ -29,7 +29,7 @@ exports.getById = function(id, callback) {
                 '   a.last_quit_time, a.reg_time ' +
                 'FROM account a ' +
                 'WHERE a.id = $1';
-
+                
     database.query(query, [id], function(result) {
         if(result.length === 0) {
             return callback(undefined);

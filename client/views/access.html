@@ -1,0 +1,19 @@
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nick</th>
+            <th>Access Level</th>
+        </tr>
+    </thead>
+    <tbody data-bind="foreach: access">
+        <tr>
+            <td><a data-bind="attr: { href: $parent.nickLink(nick) }, text: nick"></a></td>
+            <td data-bind="text: $parent.levelText(level)"></td>
+        </tr>
+    </tbody>
+</table>
+
+<script>
+    window.Channel = {{ channelName }}
+</script>
+<script src="/scripts/access.js"></script>

@@ -9,6 +9,9 @@
         <link rel="stylesheet" href="/content/site.css">
         <script src="/scripts/jquery.js"></script>
         <script src="/scripts/bootstrap.js"></script>
+        <script src="/scripts/knockout.js"></script>
+        <script src="/scripts/index.js"></script>
+        <script src="/scripts/moment.js"></script>
         <base href="/">
     </head>
     <body role="document">
@@ -29,24 +32,36 @@
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li><a href="/">Home</a></li>
-                        <li>
+                        <li class="{{# if activeHome }}active{{/if}}"><a href="/">Home</a></li>
+                        {{# if authenticated }}
+                        <li class="{{# if activeAccount }}active{{/if}}">
                             <a href="/account">Account</a>
                         </li>
-                        <li>
+                        {{/ if }}
+                        <li class="{{# if activeNickname }}active{{/if}}">
                             <a href="/nickname">Nickname</a>
                         </li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <li>
+                        {{# if authenticated }}
+                        <li><a href="/logout">Logout</a></li>
+                        {{ else }}
+                        <li class="{{# if activeLogin }}active{{/if}}">
                             <a href="/login">Login</a>
                         </li>
-                        <li><a href="/account/logout">Logout</a></li>
+                        {{/ if }}
                     </ul>
                 </div>
         </nav>
         <div class="container">
-            {{{ content }}}
+            {{# if sidebar }}
+                {{> (lookup . 'sidebar') }}
+                <div class="main col-sm-9 col-md-10 col-sm-offset-3 col-md-offset-2">
+            {{ else }}
+            <div class="main col-sm-9 col-md-10">
+            {{/ if }}
+                {{{ content }}}
+            </div>
         </div>
     </body>
 </html>

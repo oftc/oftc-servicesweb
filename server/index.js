@@ -4,12 +4,39 @@ var Hapi = require('hapi');
 var Path = require('path');
 var Config = require('./config.js');
 var Controllers = require('./controllers');
+var jwt = require('jsonwebtoken');
+var Boom = require('boom');
 
 var server = new Hapi.Server();
 server.connection({
     host: '127.0.0.1',
     port: Config.port
 });
+
+server.auth.scheme('jwt', function(server, options) {
+    return {
+        authenticate: function(request, reply) {
+            var token = request.headers.authorization || request.state.authToken;
+            
+            if(token) {
+                jwt.verify(token, Config.tokenSecret, function(err, decoded) {
+                    if(err) {
+                        return reply(Boom.unauthorized(null, ''));
+                    }
+                    
+                    return reply.continue({ credentials: decoded });
+                });
+            }
+            else {
+                reply(Boom.unauthorized(null, ''));
+            }
+        }
+    };
+});
+
+server.auth.strategy('default', 'jwt', 'try');
+
+var globalContext = {};
 
 server.views({
     engines: {
@@ -18,7 +45,9 @@ server.views({
     path: Path.join(__dirname, '../client/views'),
     layoutPath: Path.join(__dirname, '../client/views/layout'),
     layout: true,
-    partialsPath: Path.join(__dirname, '../client/views/partials')
+    partialsPath: Path.join(__dirname, '../client/views/partials'),
+    context: globalContext,
+    isCached: false
 });
 
 server.route({
@@ -51,13 +80,28 @@ server.route({
     }
 });
 
+server.route({
+    method: 'GET',
+    path: '/fonts/{filename}',
+    config: {
+        files: {
+            relativeTo: Path.join(__dirname, '../client/fonts')
+        }
+    },
+    handler: {
+        file: function (request) {
+            return request.params.filename;
+        }
+    }
+});
+
 Controllers.init(server);
 
 server.route({
     method: 'GET',
     path: '/',
     handler: function (request, reply) {
-        reply.view('index', { });
+        reply.view('index', { authenticated: request.auth.isAuthenticated, activeHome: true });
     }
 });
 

@@ -1,4 +1,5 @@
 var channelRepository = require('../channelrepository.js');
+var Boom = require('boom');
 
 var AKICK_LIST = 0;
 var INVEX_LIST = 2;
@@ -13,14 +14,14 @@ function addPrivateProperties(channel, result) {
     return channel;
 }
 
-function channelGet(req, res, next) {
-    channelRepository.getByName('#' + req.params.name, function(result) {
+function channelGet(request, reply) {
+    channelRepository.getByName('#' + request.params.name, function(result) {
         if(!result) {
-            return next(new restify.NotFoundError());
+            return reply(Boom.notFound("Channel not found"));
         }
 
-        if(!req.authObject && result.flag_private) {
-            return next(new restify.NotFoundError());
+        if(!request.auth.isAuthenticated && result.flag_private) {
+            return reply(Boom.forbidden("Not authorised"));
         }
 
         var channel = {
@@ -42,76 +43,187 @@ function channelGet(req, res, next) {
             autoSave: result.flag_autosave
         };
 
-        if(!req.authObject) {
-            res.json(channel);
-            return next();
+        if(!request.auth.isAuthenticated) {
+            return reply(channel);
         }
 
-        if(req.authObject.admin) {
+        if(request.auth.credentials.admin) {
             channel = addPrivateProperties(channel, result);
 
-            res.json(channel);
-            return next();
+            return reply(channel);
         }
 
-        channelRepository.isOnAccessList(req.params.name, req.authObject.id, function(isOn) {
+        channelRepository.isOnAccessList(request.params.name, request.auth.credentials.id, function(isOn) {
             if(isOn) {
                 channel = addPrivateProperties(channel, result);
             }
 
-            res.json(channel);
-            return next();
+            return reply(channel);
         });
     });
 }
 
-function channelAccessList(req, res, next) {
-    channelRepository.getAccessList('#' + req.params.name, function(result) {
-        if(!result || !req.authObject) {
-            return next(new restify.NotFoundError());
+function channelAccessList(request, reply) {
+    channelRepository.getAccessList('#' + request.params.name, function(result) {
+        if(!result || !request.auth.isAuthenticated) {
+            return reply(Boom.notFound());
         }
 
-        if(req.authObject.admin) {
-            res.json(result);
-            return next();
+        if(request.auth.credentials.admin) {
+            return reply(result);
         }
 
-        channelRepository.isOnAccessList(req.params.name, req.authObject.id, function(isOn) {
+        channelRepository.isOnAccessList(request.params.name, request.auth.credentials.id, function(isOn) {
             if(isOn) {
-                res.json(result);
+                return reply(result);
             }
 
-            return next(new restify.NotFoundError());
+            return reply(Boom.notFound());
         });
     });
 }
 
-function queryResp(func, type, req, res, next) {
-    func('#' + req.params.name, type, function(result) {
-        if(!result || !req.authObject) {
-            return next(new restify.NotFoundError());
+function queryResp(func, type, request, reply) {
+    func('#' + request.params.name, type, function(result) {
+        if(!result || !request.auth.isAuthenticated) {
+            return reply(Boom.notFound());
         }
 
-        if(req.authObject.admin) {
-            res.json(result);
-            return next();
+        if(request.auth.credentials.admin) {
+            return reply(result);
         }
 
-        channelRepository.isOnAccessList(req.params.name, req.authObject.id, function(isOn) {
+        channelRepository.isOnAccessList(request.params.name, request.auth.credentials.id, function(isOn) {
             if(isOn) {
-                res.json(result);
+                reply(result);
             }
 
-            return next(new restify.NotFoundError());
+            return reply(Boom.notFound());
         });
     });
 }
 
 module.exports.init = function(server) {
-    /*server.get('/api/channel/:name', channelGet);
-    server.get('/api/channel/:name/access', channelAccessList);
-    server.get('/api/channel/:name/akicks', queryResp.bind(server, channelRepository.getList, AKICK_LIST));
-    server.get('/api/channel/:name/quiets', queryResp.bind(server, channelRepository.getList, QUIET_LIST));
-    server.get('/api/channel/:name/invexes', queryResp.bind(server, channelRepository.getList, INVEX_LIST));
-    server.get('/api/channel/:name/excepts', queryResp.bind(server, channelRepository.getList, EXCEPT_LIST));*/
+    server.route({
+       method: 'GET',
+       path: '/api/channel/{name}',
+       handler: channelGet
+    });
+    
+    server.route({
+        method: 'GET',
+        path: "/api/channel/{name}/access",
+        handler: channelAccessList
+    });
+    
+    server.route({
+        method: 'GET',
+        path: "/api/channel/{name}/akicks",
+        handler: queryResp.bind(server, channelRepository.getList, AKICK_LIST)
+    });
+    
+    server.route({
+        method: 'GET',
+        path: "/api/channel/{name}/quiets",
+        handler: queryResp.bind(server, channelRepository.getList, QUIET_LIST)
+    });
+    
+    server.route({
+        method: 'GET',
+        path: "/api/channel/{name}/excepts",
+        handler: queryResp.bind(server, channelRepository.getList, EXCEPT_LIST)
+    });
+    
+    server.route({
+        method: 'GET',
+        path: "/api/channel/{name}/invexes",
+        handler: queryResp.bind(server, channelRepository.getList, INVEX_LIST)
+    });
+    
+    server.route({
+        method: 'GET',
+        path: '/channel/{name}',
+        handler: function(request, reply) {
+            reply.view('channel', { 
+                authenticated: request.auth.isAuthenticated, 
+                activeChannelDetails: true, 
+                sidebar: 'channel',
+                channelName: request.params.name
+            });
+        }
+    });
+   
+    server.route({
+        method: 'GET',
+        path: '/channel/{name}/access',
+        handler: function(request, reply) {
+            reply.view('access', { 
+                authenticated: request.auth.isAuthenticated, 
+                activeChannel: true,
+                activeAccessList: true,
+                sidebar: 'channel',
+                channelName: request.params.name
+            });
+        }
+    });
+    
+    server.route({
+        method: 'GET',
+        path: '/channel/{name}/akicks',
+        handler: function(request, reply) {
+            reply.view('list', {
+                authenticated: request.auth.isAuthenticated, 
+                activeChannel: true,
+                activeAKickList: true,
+                sidebar: 'channel',
+                channelName: request.params.name,
+                list: 'akicks'
+            });
+        }
+    });
+    
+    server.route({
+        method: 'GET',
+        path: '/channel/{name}/quiets',
+        handler: function(request, reply) {
+            reply.view('list', { 
+                authenticated: request.auth.isAuthenticated, 
+                activeChannel: true,
+                activeQuietList: true,
+                sidebar: 'channel',
+                channelName: request.params.name,
+                list: 'quiets'
+            });
+        }
+    });
+
+    server.route({
+        method: 'GET',
+        path: '/channel/{name}/excepts',
+        handler: function(request, reply) {
+            reply.view('list', { 
+                authenticated: request.auth.isAuthenticated, 
+                activeChannel: true,
+                activeExceptList: true,
+                sidebar: 'channel',
+                channelName: request.params.name,
+                list: 'excepts'
+            });
+        }
+    });
+    
+    server.route({
+        method: 'GET',
+        path: '/channel/{name}/invexes',
+        handler: function(request, reply) {
+            reply.view('list', { 
+                authenticated: request.auth.isAuthenticated, 
+                activeChannel: true,
+                activeInvexList: true,
+                sidebar: 'channel',
+                channelName: request.params.name,
+                list: 'invexes'
+            });
+        }
+    });
 };

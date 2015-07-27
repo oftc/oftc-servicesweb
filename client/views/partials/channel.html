@@ -1,0 +1,9 @@
+<div class="col-sm-3 col-md-2 sidebar">
+    <ul class="nav nav-sidebar">
+        <li class="{{# if activeChannelDetails }}active{{/ if }}"><a href='/channel/{{ channelName }}'>Details</a></li>
+        <li class="{{# if activeAccessList }}active{{/ if }}"><a href='/channel/{{ channelName }}/access'>Access List</a></li>
+        <li class="{{# if activeAKickList }}active{{/ if }}"><a href='/channel/{{ channelName }}/akicks'>Auto Kick List</a></li>
+        <li class="{{# if activeQuietList }}active{{/ if }}"><a href='/channel/{{ channelName}}/quiets'>Quiet List</a></li>
+        <li class="{{# if activeExceptList }}active{{/ if }}"><a href='/channel/{{ channelName }}/excepts'>Ban Exception List</a></li>
+        <li class="{{# if activeInvexList }}active{{/ if }}"><a href='/channel/{{ channelName }}/invexes'>Invite Exception List</a></li>    </ul>
+</div>
