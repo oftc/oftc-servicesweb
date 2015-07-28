@@ -26,19 +26,19 @@
         <dd data-bind="text: moment.unix(regTime()).format('Do MMMM YYYY hh:mm') + ' (' + moment.unix(regTime()).fromNow() + ')'"></dd>
         <dt>Cloak Enabled</dt>
         <dd>
-            <span data-bind="css: { glyphicon: true, 'glyphicon-ok text-success': cloakEnabled, 'glyphicon-remove text-danger': !cloakEnabled }" aria-hidden="true"></span>
+            <span data-bind="css: { glyphicon: true, 'glyphicon-ok text-success': cloakEnabled(), 'glyphicon-remove text-danger': !cloakEnabled() }" aria-hidden="true"></span>
         </dd>
         <dt>Enforce</dt>
         <dd>
-            <span data-bind="css: { glyphicon: true, 'glyphicon-ok text-success': enforce, 'glyphicon-remove text-danger': !enforce }" aria-hidden="true"></span>
+            <span data-bind="css: { glyphicon: true, 'glyphicon-ok text-success': enforce(), 'glyphicon-remove text-danger': !enforce() }" aria-hidden="true"></span>
         </dd>
         <dt>Private</dt>
         <dd>
-            <span data-bind="css: { glyphicon: true, 'glyphicon-ok text-success': private, 'glyphicon-remove text-danger': !private }" aria-hidden="true"></span>
+            <span data-bind="css: { glyphicon: true, 'glyphicon-ok text-success': private(), 'glyphicon-remove text-danger': !private() }" aria-hidden="true"></span>
         </dd>
         <dt>Secure</dt>
         <dd>
-            <span data-bind="css: { glyphicon: true, 'glyphicon-ok text-success': secure, 'glyphicon-remove text-danger': !secure }" aria-hidden="true"></span>
+            <span data-bind="css: { glyphicon: true, 'glyphicon-ok text-success': secure(), 'glyphicon-remove text-danger': !secure() }" aria-hidden="true"></span>
         </dd>
     </dl>
 </div>
