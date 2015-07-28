@@ -70,15 +70,10 @@ server.route({
 
 server.route({
     method: 'GET',
-    path: '/scripts/{filename}',
-    config: {
-        files: {
-            relativeTo: Path.join(__dirname, '../client/scripts')
-        }
-    },
+    path: '/scripts/{filename*}',
     handler: {
-        file: function (request) {
-            return request.params.filename;
+        directory: {
+            path: Path.join(__dirname, '../client/scripts')
         }
     }
 });

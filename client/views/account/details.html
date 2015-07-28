@@ -23,7 +23,7 @@
         <dd data-bind="text: lastRealName"></dd>
         <!-- /ko -->
         <dt>Registered</dt>
-        <dd data-bind="text: moment.unix(regTime()).format('Do MMMM YYYY hh:mm') + ' (' + moment.unix(regTime()).fromNow() + ')'""></dd>
+        <dd data-bind="text: moment.unix(regTime()).format('Do MMMM YYYY hh:mm') + ' (' + moment.unix(regTime()).fromNow() + ')'"></dd>
         <dt>Cloak Enabled</dt>
         <dd>
             <span data-bind="css: { glyphicon: true, 'glyphicon-ok text-success': cloakEnabled, 'glyphicon-remove text-danger': !cloakEnabled }" aria-hidden="true"></span>
@@ -43,4 +43,4 @@
     </dl>
 </div>
 
-<script src="/scripts/account.js"></script>
+<script src="/scripts/account/details.js"></script>

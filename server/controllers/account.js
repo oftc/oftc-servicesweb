@@ -35,7 +35,7 @@ module.exports.init = function(server) {
         method: 'GET',
         path: '/account',
         handler: function(request, reply) {
-            reply.view('account', {
+            reply.view('account/details', {
                 authenticated: request.auth.isAuthenticated,
                 activeAccount: true,
                 activeDetails: true,
@@ -48,7 +48,7 @@ module.exports.init = function(server) {
         method: 'GET',
         path: '/account/nicknames',
         handler: function(request, reply) {
-            reply.view('nicknames', {
+            reply.view('account/nicknames', {
                 authenticated: request.auth.isAuthenticated,
                 activeAccount: true,
                 activeNicknames: true,
@@ -61,7 +61,7 @@ module.exports.init = function(server) {
         method: 'GET',
         path: '/account/certificates',
         handler: function(request, reply) {
-            reply.view('certificates', {
+            reply.view('account/certificates', {
                 authenticated: request.auth.isAuthenticated,
                 activeAccount: true,
                 activeCertificates: true,
@@ -74,7 +74,7 @@ module.exports.init = function(server) {
         method: 'GET',
         path: '/account/channels',
         handler: function(request, reply) {
-            reply.view('channels', {
+            reply.view('account/channels', {
                 authenticated: request.auth.isAuthenticated,
                 activeAccount: true,
                 activeChannels: true,
