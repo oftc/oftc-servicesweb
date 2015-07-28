@@ -42,7 +42,7 @@ function accountGet(request, reply) {
             email: result.email,
             url: result.url,
             lastHost: result.last_host,
-            lastQuitMessage: result.last_quit_message,
+            lastQuitMessage: result.last_quit_msg,
             lastQuitTime: result.last_quit_time,
             lastRealname: result.last_realname,
             enforce: result.flag_enforce,
