@@ -1,4 +1,7 @@
 /* global __dirname */
+
+'use strict';
+
 var Handlebars = require('handlebars');
 var Hapi = require('hapi');
 var Path = require('path');
@@ -13,17 +16,17 @@ server.connection({
     port: Config.port
 });
 
-server.auth.scheme('jwt', function(server, options) {
+server.auth.scheme('jwt', function() {
     return {
         authenticate: function(request, reply) {
             var token = request.headers.authorization || request.state.authToken;
-            
+
             if(token) {
                 jwt.verify(token, Config.tokenSecret, function(err, decoded) {
                     if(err) {
                         return reply(Boom.unauthorized(null, ''));
                     }
-                    
+
                     return reply.continue({ credentials: decoded });
                 });
             }

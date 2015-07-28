@@ -1,3 +1,5 @@
+'use strict';
+
 var pg = require('pg');
 var config = require('./config.js');
 

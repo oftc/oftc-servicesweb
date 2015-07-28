@@ -1,3 +1,5 @@
+'use strict';
+
 var accountRepository = require('../accountrepository.js');
 var channelRepository = require('../channelrepository.js');
 var crypto = require('crypto');
@@ -85,7 +87,7 @@ module.exports.init = function(server) {
         strictHeader: true,
         path: '/'
     });
-    
+
     server.route({
         method: 'GET',
         path: '/login',
@@ -93,37 +95,37 @@ module.exports.init = function(server) {
             reply.view('login', { authenticated: request.auth.isAuthenticated, activeLogin: true });
         }
     });
-    
+
     server.route({
         method: 'GET',
         path: '/logout',
         handler: accountLogout
     });
-   
+
     server.route({
        method: 'POST',
        path: '/api/login',
-       handler: accountLogin 
+       handler: accountLogin
     });
-    
+
     server.route({
        method: 'GET',
        path: '/api/account/{id?}',
        handler: accountGet
     });
-    
+
     server.route({
        method: 'GET',
        path: '/api/account/nicknames/{id?}',
        handler: accountNicknames
-    });    
-    
+    });
+
     server.route({
        method: 'GET',
        path: '/api/account/certificates/{id?}',
        handler: accountCertificates
     });
-    
+
     server.route({
        method: 'GET',
        path: '/api/account/channels/{id?}',
@@ -134,47 +136,47 @@ module.exports.init = function(server) {
         method: 'GET',
         path: '/account',
         handler: function(request, reply) {
-            reply.view('account', { 
-                authenticated: request.auth.isAuthenticated, 
-                activeAccount: true, 
+            reply.view('account', {
+                authenticated: request.auth.isAuthenticated,
+                activeAccount: true,
                 activeDetails: true,
                 sidebar: 'account'
             });
         }
     });
-    
+
     server.route({
         method: 'GET',
         path: '/account/nicknames',
         handler: function(request, reply) {
-            reply.view('nicknames', { 
-                authenticated: request.auth.isAuthenticated, 
+            reply.view('nicknames', {
+                authenticated: request.auth.isAuthenticated,
                 activeAccount: true,
                 activeNicknames: true,
                 sidebar: 'account'
             });
         }
     });
-    
+
     server.route({
         method: 'GET',
         path: '/account/certificates',
         handler: function(request, reply) {
-            reply.view('certificates', { 
-                authenticated: request.auth.isAuthenticated, 
+            reply.view('certificates', {
+                authenticated: request.auth.isAuthenticated,
                 activeAccount: true,
                 activeCertificates: true,
                 sidebar: 'account'
             });
         }
     });
-    
+
     server.route({
         method: 'GET',
         path: '/account/channels',
         handler: function(request, reply) {
-            reply.view('channels', { 
-                authenticated: request.auth.isAuthenticated, 
+            reply.view('channels', {
+                authenticated: request.auth.isAuthenticated,
                 activeAccount: true,
                 activeChannels: true,
                 sidebar: 'account'

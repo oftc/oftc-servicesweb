@@ -1,3 +1,5 @@
+'use strict';
+
 var database = require('./database.js');
 
 exports.getChannelsForAccount = function(id, callback) {

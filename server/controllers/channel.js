@@ -1,3 +1,5 @@
+'use strict';
+
 var channelRepository = require('../channelrepository.js');
 var Boom = require('boom');
 
@@ -17,11 +19,11 @@ function addPrivateProperties(channel, result) {
 function channelGet(request, reply) {
     channelRepository.getByName('#' + request.params.name, function(result) {
         if(!result) {
-            return reply(Boom.notFound("Channel not found"));
+            return reply(Boom.notFound('Channel not found'));
         }
 
         if(!request.auth.isAuthenticated && result.flag_private) {
-            return reply(Boom.forbidden("Not authorised"));
+            return reply(Boom.forbidden('Not authorised'));
         }
 
         var channel = {
@@ -109,56 +111,56 @@ module.exports.init = function(server) {
        path: '/api/channel/{name}',
        handler: channelGet
     });
-    
+
     server.route({
         method: 'GET',
-        path: "/api/channel/{name}/access",
+        path: '/api/channel/{name}/access',
         handler: channelAccessList
     });
-    
+
     server.route({
         method: 'GET',
-        path: "/api/channel/{name}/akicks",
+        path: '/api/channel/{name}/akicks',
         handler: queryResp.bind(server, channelRepository.getList, AKICK_LIST)
     });
-    
+
     server.route({
         method: 'GET',
-        path: "/api/channel/{name}/quiets",
+        path: '/api/channel/{name}/quiets',
         handler: queryResp.bind(server, channelRepository.getList, QUIET_LIST)
     });
-    
+
     server.route({
         method: 'GET',
-        path: "/api/channel/{name}/excepts",
+        path: '/api/channel/{name}/excepts',
         handler: queryResp.bind(server, channelRepository.getList, EXCEPT_LIST)
     });
-    
+
     server.route({
         method: 'GET',
-        path: "/api/channel/{name}/invexes",
+        path: '/api/channel/{name}/invexes',
         handler: queryResp.bind(server, channelRepository.getList, INVEX_LIST)
     });
-    
+
     server.route({
         method: 'GET',
         path: '/channel/{name}',
         handler: function(request, reply) {
-            reply.view('channel', { 
-                authenticated: request.auth.isAuthenticated, 
-                activeChannelDetails: true, 
+            reply.view('channel', {
+                authenticated: request.auth.isAuthenticated,
+                activeChannelDetails: true,
                 sidebar: 'channel',
                 channelName: request.params.name
             });
         }
     });
-   
+
     server.route({
         method: 'GET',
         path: '/channel/{name}/access',
         handler: function(request, reply) {
-            reply.view('access', { 
-                authenticated: request.auth.isAuthenticated, 
+            reply.view('access', {
+                authenticated: request.auth.isAuthenticated,
                 activeChannel: true,
                 activeAccessList: true,
                 sidebar: 'channel',
@@ -166,13 +168,13 @@ module.exports.init = function(server) {
             });
         }
     });
-    
+
     server.route({
         method: 'GET',
         path: '/channel/{name}/akicks',
         handler: function(request, reply) {
             reply.view('list', {
-                authenticated: request.auth.isAuthenticated, 
+                authenticated: request.auth.isAuthenticated,
                 activeChannel: true,
                 activeAKickList: true,
                 sidebar: 'channel',
@@ -181,13 +183,13 @@ module.exports.init = function(server) {
             });
         }
     });
-    
+
     server.route({
         method: 'GET',
         path: '/channel/{name}/quiets',
         handler: function(request, reply) {
-            reply.view('list', { 
-                authenticated: request.auth.isAuthenticated, 
+            reply.view('list', {
+                authenticated: request.auth.isAuthenticated,
                 activeChannel: true,
                 activeQuietList: true,
                 sidebar: 'channel',
@@ -201,8 +203,8 @@ module.exports.init = function(server) {
         method: 'GET',
         path: '/channel/{name}/excepts',
         handler: function(request, reply) {
-            reply.view('list', { 
-                authenticated: request.auth.isAuthenticated, 
+            reply.view('list', {
+                authenticated: request.auth.isAuthenticated,
                 activeChannel: true,
                 activeExceptList: true,
                 sidebar: 'channel',
@@ -211,13 +213,13 @@ module.exports.init = function(server) {
             });
         }
     });
-    
+
     server.route({
         method: 'GET',
         path: '/channel/{name}/invexes',
         handler: function(request, reply) {
-            reply.view('list', { 
-                authenticated: request.auth.isAuthenticated, 
+            reply.view('list', {
+                authenticated: request.auth.isAuthenticated,
                 activeChannel: true,
                 activeInvexList: true,
                 sidebar: 'channel',

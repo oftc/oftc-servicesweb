@@ -1,0 +1,22 @@
+rules:
+    indent: [2, 4]
+    quotes: [1, "single"]
+    strict: [1, "global"]
+    global-strict: 0
+    brace-style: [2, "stroustrup"]
+    no-cond-assign: [2]
+    no-debugger: [1]
+    no-empty: [1]
+    no-extra-semi: [2]
+    no-sparse-arrays: [1]
+    curly: [2, "all"]
+    no-fallthrough: [2]
+    no-multi-spaces: [2]
+    no-mixed-spaces-and-tabs: [1]
+    space-before-blocks: [1]
+    space-in-parens: [2, "never"]
+    no-multiple-empty-lines: [1]
+    eol-last: [2]
+
+env:
+    node: true
