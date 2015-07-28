@@ -2,7 +2,7 @@
 
 'use strict';
 
-var channelViewModel = {
+var channelData = {
     name: ko.observable(''),
     email: ko.observable(''),
     url: ko.observable(''),
@@ -25,30 +25,12 @@ var channelViewModel = {
     restricted: ko.observable(false)
 };
 
+var channelViewModel = ko.mapping.fromJS(channelData);
 ko.applyBindings(channelViewModel);
 
 $().ready(function() {
     $.get('/api/channel/' + window.Channel, {}, function(data) {
-        channelViewModel.name(data.name);
-        channelViewModel.email(data.email);
-        channelViewModel.url(data.url);
-        channelViewModel.description(data.description);
-        channelViewModel.entryMessage(data.entryMessage);
-        channelViewModel.modeLock(data.modeLock);
-        channelViewModel.topic(data.topic);
-        channelViewModel.regTime(data.regTime);
-        channelViewModel.lastUsed(data.lastUsed);
-        channelViewModel.private(data.private);
-        channelViewModel.autoLimit(data.autoLimit);
-        channelViewModel.autoOp(data.autoOp);
-        channelViewModel.autoSave(data.autoSave);
-        channelViewModel.autoVoice(data.autoVoice);
-        channelViewModel.expireBans(data.expireBans);
-        channelViewModel.floodserv(data.floodserv);
-        channelViewModel.leaveOps(data.leaveOps);
-        channelViewModel.topicLock(data.topicLock);
-        channelViewModel.verbose(data.verbose);
-        channelViewModel.restricted(data.restricted);
+        ko.mapping.fromJS(data, channelViewModel);
     })
     .fail(function() {
         console.warn('failed');
