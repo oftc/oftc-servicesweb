@@ -64,3 +64,14 @@ exports.getCertificates = function(id, callback) {
         callback(result);
     });
 };
+
+exports.getAdmins = function(callback) {
+    var query = 'SELECT n.nick ' +
+                'FROM account a ' +
+                'INNER JOIN nickname n ON a.primary_nick = n.id ' +
+                'WHERE a.flag_admin = True';
+
+    database.query(query, [], function(result) {
+        callback(result);
+    });
+};

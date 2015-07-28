@@ -1,0 +1,16 @@
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nickname</th>
+        </tr>
+    </thead>
+    <tbody data-bind="foreach: admins">
+        <tr>
+            <td>
+                <a data-bind="text: nick, attr: { href: '/nickname/' + nick }"></a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<script src="/scripts/admin/admins.js"></script>
