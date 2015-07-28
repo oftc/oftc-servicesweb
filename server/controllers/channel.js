@@ -5,7 +5,7 @@ module.exports.init = function(server) {
         method: 'GET',
         path: '/channel/{name}',
         handler: function(request, reply) {
-            reply.view('channel', {
+            reply.view('channel/details', {
                 authenticated: request.auth.isAuthenticated,
                 activeChannelDetails: true,
                 sidebar: 'channel',
@@ -18,7 +18,7 @@ module.exports.init = function(server) {
         method: 'GET',
         path: '/channel/{name}/access',
         handler: function(request, reply) {
-            reply.view('access', {
+            reply.view('channel/access', {
                 authenticated: request.auth.isAuthenticated,
                 activeChannel: true,
                 activeAccessList: true,
@@ -32,7 +32,7 @@ module.exports.init = function(server) {
         method: 'GET',
         path: '/channel/{name}/akicks',
         handler: function(request, reply) {
-            reply.view('list', {
+            reply.view('channel/list', {
                 authenticated: request.auth.isAuthenticated,
                 activeChannel: true,
                 activeAKickList: true,
@@ -47,7 +47,7 @@ module.exports.init = function(server) {
         method: 'GET',
         path: '/channel/{name}/quiets',
         handler: function(request, reply) {
-            reply.view('list', {
+            reply.view('channel/list', {
                 authenticated: request.auth.isAuthenticated,
                 activeChannel: true,
                 activeQuietList: true,
@@ -62,7 +62,7 @@ module.exports.init = function(server) {
         method: 'GET',
         path: '/channel/{name}/excepts',
         handler: function(request, reply) {
-            reply.view('list', {
+            reply.view('channel/list', {
                 authenticated: request.auth.isAuthenticated,
                 activeChannel: true,
                 activeExceptList: true,
@@ -77,7 +77,7 @@ module.exports.init = function(server) {
         method: 'GET',
         path: '/channel/{name}/invexes',
         handler: function(request, reply) {
-            reply.view('list', {
+            reply.view('channel/list', {
                 authenticated: request.auth.isAuthenticated,
                 activeChannel: true,
                 activeInvexList: true,
