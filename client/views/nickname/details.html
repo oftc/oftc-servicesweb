@@ -1,0 +1,25 @@
+<div class="col-xs-6 col-sm-12 col-md-10 col-lg-8">
+    <dl class="dl-horizontal">
+        <dt>Nickname:</dt>
+        <dd data-bind="text: nick"></dd>
+        <!-- ko if: email -->
+        <dt>E-mail Address:</dt>
+        <dd data-bind="text: email"></dd>
+        <!-- /ko -->
+        <dt>Last Host:</dt>
+        <dd data-bind="text: lastHost"></dd>
+        <dt>Last Quit Time:</dt>
+        <dd data-bind="text: moment.unix(lastQuitTime()).format('Do MMMM YYYY hh:mm') + ' (' + moment.unix(lastQuitTime()).fromNow() + ')'"></dd>
+        <!-- ko if: lastQuitMessage -->
+        <dt>Last Quit Message:</dt>
+        <dd data-bind="text: lastQuitMessage"></dd>
+        <!-- /ko -->
+        <dt>Last Real Name:</dt>
+        <dd data-bind="text: lastRealname"></dd>
+        <dt>Registered:</dt>
+        <dd data-bind="text: moment.unix(regTime()).format('Do MMMM YYYY hh:mm') + ' (' + moment.unix(regTime()).fromNow() + ')'"></dd>
+    </dl>
+</div>
+
+<script>window.Nickname = '{{ nickname }}';</script>
+<script src="/scripts/nickname/details.js"></script>

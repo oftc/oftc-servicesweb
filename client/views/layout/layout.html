@@ -43,6 +43,11 @@
                         <li class="{{# if activeNickname }}active{{/if}}">
                             <a href="/nickname">Nickname</a>
                         </li>
+                        {{# if admin }}
+                        <li class="{{# if activeAdmin }}active{{/if}}">
+                            <a href="/admin">Admin</a>
+                        </li>
+                        {{/ if }}
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         {{# if authenticated }}

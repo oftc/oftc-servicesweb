@@ -1,0 +1,20 @@
+<form class="form-horizontal" data-bind="submit: search">
+    <div class="form-group">
+        <label class="col-sm-2 control-label" for="nickname">Nickname</label>
+        <div class="col-sm-6">
+            <input
+                data-bind="value: nickname"
+                type="text"
+                class="form-control"
+                id="nickname"
+                placeholder="Enter nickname to search for">
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-2">
+            <button type="submit" class="btn btn-default">Search</button>
+        </div>
+    </div>
+</form>
+
+<script src="/scripts/nickname/index.js"></script>

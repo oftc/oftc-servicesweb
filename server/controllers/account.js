@@ -17,6 +17,7 @@ module.exports.init = function(server) {
         handler: function(request, reply) {
             reply.view('login', {
                 authenticated: request.auth.isAuthenticated,
+                admin: request.auth.credentials && request.auth.credentials.admin,
                 activeLogin: true
             });
         }
@@ -37,6 +38,7 @@ module.exports.init = function(server) {
         handler: function(request, reply) {
             reply.view('account/details', {
                 authenticated: request.auth.isAuthenticated,
+                admin: request.auth.credentials.admin,
                 activeAccount: true,
                 activeDetails: true,
                 sidebar: 'account'
@@ -50,6 +52,7 @@ module.exports.init = function(server) {
         handler: function(request, reply) {
             reply.view('account/nicknames', {
                 authenticated: request.auth.isAuthenticated,
+                admin: request.auth.credentials.admin,
                 activeAccount: true,
                 activeNicknames: true,
                 sidebar: 'account'
@@ -63,6 +66,7 @@ module.exports.init = function(server) {
         handler: function(request, reply) {
             reply.view('account/certificates', {
                 authenticated: request.auth.isAuthenticated,
+                admin: request.auth.credentials.admin,
                 activeAccount: true,
                 activeCertificates: true,
                 sidebar: 'account'
@@ -76,6 +80,7 @@ module.exports.init = function(server) {
         handler: function(request, reply) {
             reply.view('account/channels', {
                 authenticated: request.auth.isAuthenticated,
+                admin: request.auth.credentials.admin,
                 activeAccount: true,
                 activeChannels: true,
                 sidebar: 'account'

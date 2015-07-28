@@ -7,6 +7,7 @@ module.exports.init = function(server) {
         handler: function(request, reply) {
             reply.view('channel/details', {
                 authenticated: request.auth.isAuthenticated,
+                admin: request.auth.credentials.admin,
                 activeChannelDetails: true,
                 sidebar: 'channel',
                 channelName: request.params.name
@@ -20,6 +21,7 @@ module.exports.init = function(server) {
         handler: function(request, reply) {
             reply.view('channel/access', {
                 authenticated: request.auth.isAuthenticated,
+                admin: request.auth.credentials.admin,
                 activeChannel: true,
                 activeAccessList: true,
                 sidebar: 'channel',
@@ -34,6 +36,7 @@ module.exports.init = function(server) {
         handler: function(request, reply) {
             reply.view('channel/list', {
                 authenticated: request.auth.isAuthenticated,
+                admin: request.auth.credentials.admin,
                 activeChannel: true,
                 activeAKickList: true,
                 sidebar: 'channel',
@@ -49,6 +52,7 @@ module.exports.init = function(server) {
         handler: function(request, reply) {
             reply.view('channel/list', {
                 authenticated: request.auth.isAuthenticated,
+                admin: request.auth.credentials.admin,
                 activeChannel: true,
                 activeQuietList: true,
                 sidebar: 'channel',
@@ -64,6 +68,7 @@ module.exports.init = function(server) {
         handler: function(request, reply) {
             reply.view('channel/list', {
                 authenticated: request.auth.isAuthenticated,
+                admin: request.auth.credentials.admin,
                 activeChannel: true,
                 activeExceptList: true,
                 sidebar: 'channel',
@@ -79,6 +84,7 @@ module.exports.init = function(server) {
         handler: function(request, reply) {
             reply.view('channel/list', {
                 authenticated: request.auth.isAuthenticated,
+                admin: request.auth.credentials.admin,
                 activeChannel: true,
                 activeInvexList: true,
                 sidebar: 'channel',

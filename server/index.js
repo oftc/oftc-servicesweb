@@ -99,7 +99,11 @@ server.route({
     method: 'GET',
     path: '/',
     handler: function (request, reply) {
-        reply.view('index', { authenticated: request.auth.isAuthenticated, activeHome: true });
+        reply.view('index', {
+            authenticated: request.auth.isAuthenticated,
+            admin: request.auth.credentials && request.auth.credentials.admin,
+            activeHome: true
+        });
     }
 });
 

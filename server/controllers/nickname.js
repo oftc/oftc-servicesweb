@@ -1,32 +1,29 @@
 'use strict';
 
-var nicknameRepository = require('../nicknamerepository.js');
-
-function nicknameGet(req, res, next) {
-    nicknameRepository.getByName(req.params.name, function(result) {
-        if(!result) {
-            return next(new restify.NotFoundError());
-        }
-
-        if((req.authObject && req.authObject.admin) || !result.flag_private) {
-            var nick = {
-                nick: result.nick,
-                lastHost: result.last_host,
-                lastRealname: result.last_realname,
-                lastQuitMessage: result.last_quit_msg,
-                lastQuitTime: result.last_quit_time,
-                regTime: result.reg_time,
-                email: result.email
-            };
-
-            res.json(nick);
-            return next();
-        }
-
-        return next(new restify.NotFoundError());
-    });
-}
-
 module.exports.init = function(server) {
-    //server.get('/api/nickname/:name', nicknameGet);
+    server.route({
+        method: 'GET',
+        path: '/nickname/{name}',
+        handler: function(request, reply) {
+            reply.view('nickname/details', {
+                authenticated: request.auth.isAuthenticated,
+                admin: request.auth.credentials.admin,
+                activeNickname: true,
+                nickname: request.params.name
+            });
+        }
+    });
+
+    server.route({
+        method: 'GET',
+        path: '/nickname',
+        handler: function(request, reply) {
+            reply.view('nickname/index', {
+                authenticated: request.auth.isAuthenticated,
+                admin: request.auth.credentials.admin,
+                activeNickname: true,
+                nickname: request.params.name
+            });
+        }
+    });
 };
