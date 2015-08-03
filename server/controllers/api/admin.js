@@ -17,14 +17,20 @@ function adminAKills(request, reply) {
 
 module.exports.init = function(server) {
     server.route({
-       method: 'GET',
-       path: '/api/admin/admins',
-       handler: adminAdmins
+        method: 'GET',
+        path: '/api/admin/admins',
+        config: {
+            plugins: { 'hapi-auth-jwt': { requiresAdmin: true } },
+            handler: adminAdmins
+        }
     });
 
     server.route({
-       method: 'GET',
-       path: '/api/admin/akills',
-       handler: adminAKills
+        method: 'GET',
+        path: '/api/admin/akills',
+        config: {
+            plugins: { 'hapi-auth-jwt': { requiresAdmin: true } },
+            handler: adminAKills
+        }
     });
 };

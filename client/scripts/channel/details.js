@@ -3,26 +3,27 @@
 'use strict';
 
 var channelData = {
-    name: ko.observable(''),
-    email: ko.observable(''),
-    url: ko.observable(''),
-    description: ko.observable(''),
-    entryMessage: ko.observable(''),
-    modeLock: ko.observable(''),
-    topic: ko.observable(''),
-    regTime: ko.observable(''),
-    lastUsed: ko.observable(''),
-    autoLimit: ko.observable(false),
-    autoOp: ko.observable(false),
-    autoSave: ko.observable(false),
-    autoVoice: ko.observable(false),
-    expireBans: ko.observable(false),
-    floodserv: ko.observable(false),
-    leaveOps: ko.observable(false),
-    private: ko.observable(false),
-    topicLock: ko.observable(false),
-    verbose: ko.observable(false),
-    restricted: ko.observable(false)
+    name: '',
+    email: '',
+    url: '',
+    description: '',
+    entryMessage: '',
+    modeLock: '',
+    topic: '',
+    regTime: '',
+    lastUsed: '',
+    autoLimit: false,
+    autoOp: false,
+    autoSave: false,
+    autoVoice: false,
+    expireBans: false,
+    floodserv: false,
+    leaveOps: false,
+    private: false,
+    topicLock: false,
+    verbose: false,
+    restricted: false,
+    errorMessage: ''
 };
 
 var channelViewModel = ko.mapping.fromJS(channelData);
@@ -33,6 +34,6 @@ $().ready(function() {
         ko.mapping.fromJS(data, channelViewModel);
     })
     .fail(function() {
-        console.warn('failed');
+        channelViewModel.errorMessage('An error occured fetching the channel data.  It may be private or there may be a problem with the server.');
     });
 });

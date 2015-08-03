@@ -8,7 +8,9 @@ var nicknameData = {
     lastQuitTime: 0,
     lastQuitMessage: '',
     lastRealname: '',
-    regTime: 0
+    regTime: 0,
+    errorMessage: '',
+    loaded: false
 };
 
 var nicknameViewModel = ko.mapping.fromJS(nicknameData);
@@ -17,8 +19,9 @@ ko.applyBindings(nicknameViewModel);
 $().ready(function() {
     $.get('/api/nickname/' + window.Nickname, {}, function(data) {
         ko.mapping.fromJS(data, nicknameViewModel);
+        nicknameViewModel.loaded(true);
     })
     .fail(function() {
-        console.warn('failed');
+        nicknameViewModel.errorMessage('An error occured fetching the nickname data.  It may be private or there may be a problem with the server.');
     });
 });

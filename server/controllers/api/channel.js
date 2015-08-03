@@ -17,7 +17,8 @@ function addPrivateProperties(channel, result) {
 }
 
 function channelGet(request, reply) {
-    channelRepository.getByName('#' + request.params.name, function(result) {
+    var channelName = '#' + request.params.name;
+    channelRepository.getByName(channelName, function(result) {
         if(!result) {
             return reply(Boom.notFound('Channel not found'));
         }
@@ -55,7 +56,7 @@ function channelGet(request, reply) {
             return reply(channel);
         }
 
-        channelRepository.isOnAccessList(request.params.name, request.auth.credentials.id, function(isOn) {
+        channelRepository.isOnAccessList(channelName, request.auth.credentials.id, function(isOn) {
             if(isOn) {
                 channel = addPrivateProperties(channel, result);
             }
@@ -66,7 +67,8 @@ function channelGet(request, reply) {
 }
 
 function channelAccessList(request, reply) {
-    channelRepository.getAccessList('#' + request.params.name, function(result) {
+    var channel = '#' + request.params.name;
+    channelRepository.getAccessList(channel, function(result) {
         if(!result || !request.auth.isAuthenticated) {
             return reply(Boom.notFound());
         }
@@ -75,7 +77,7 @@ function channelAccessList(request, reply) {
             return reply(result);
         }
 
-        channelRepository.isOnAccessList(request.params.name, request.auth.credentials.id, function(isOn) {
+        channelRepository.isOnAccessList(channel, request.auth.credentials.id, function(isOn) {
             if(isOn) {
                 return reply(result);
             }
@@ -86,7 +88,8 @@ function channelAccessList(request, reply) {
 }
 
 function queryResp(func, type, request, reply) {
-    func('#' + request.params.name, type, function(result) {
+    var channel = '#' + request.params.name;
+    func(channel, function(result) {
         if(!result || !request.auth.isAuthenticated) {
             return reply(Boom.notFound());
         }
@@ -95,7 +98,7 @@ function queryResp(func, type, request, reply) {
             return reply(result);
         }
 
-        channelRepository.isOnAccessList(request.params.name, request.auth.credentials.id, function(isOn) {
+        channelRepository.isOnAccessList(channel, request.auth.credentials.id, function(isOn) {
             if(isOn) {
                 reply(result);
             }

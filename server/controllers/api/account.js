@@ -74,32 +74,41 @@ function accountChannels(request, reply) {
 
 module.exports.init = function(server) {
     server.route({
-       method: 'POST',
-       path: '/api/login',
-       handler: accountLogin
+        method: 'POST',
+        config: { auth: { mode: 'try' } },
+        path: '/api/login',
+        handler: accountLogin
     });
 
     server.route({
-       method: 'GET',
-       path: '/api/account/{id?}',
-       handler: accountGet
+        method: 'GET',
+        path: '/api/account/{id?}',
+        config: {
+            handler: accountGet
+        }
     });
 
     server.route({
-       method: 'GET',
-       path: '/api/account/nicknames/{id?}',
-       handler: accountNicknames
+        method: 'GET',
+        path: '/api/account/nicknames/{id?}',
+        config: {
+            handler: accountNicknames
+        }
     });
 
     server.route({
-       method: 'GET',
-       path: '/api/account/certificates/{id?}',
-       handler: accountCertificates
+        method: 'GET',
+        path: '/api/account/certificates/{id?}',
+        config: {
+            handler: accountCertificates
+        }
     });
 
     server.route({
-       method: 'GET',
-       path: '/api/account/channels/{id?}',
-       handler: accountChannels
+        method: 'GET',
+        path: '/api/account/channels/{id?}',
+        config: {
+            handler: accountChannels
+        }
     });
 };

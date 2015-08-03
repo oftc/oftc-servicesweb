@@ -31,6 +31,7 @@ module.exports.init = function(server) {
     server.route({
         method: 'GET',
         path: '/api/nickname/{name}',
+        config: { auth: { mode: 'try' } },
         handler: nicknameGet
     });
 };
