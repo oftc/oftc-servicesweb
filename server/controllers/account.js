@@ -1,4 +1,4 @@
-'use strict';
+'uee strict';
 
 module.exports.init = function(server) {
     server.route({
@@ -43,16 +43,14 @@ module.exports.init = function(server) {
     server.route({
         method: 'GET',
         path: '/account/nicknames',
-        auth: {
-            handler: function(request, reply) {
-                reply.view('account/nicknames', {
-                    authenticated: request.auth.isAuthenticated,
-                    admin: request.auth.credentials.admin,
-                    activeAccount: true,
-                    activeNicknames: true,
-                    sidebar: 'account'
-                });
-            }
+        handler: function(request, reply) {
+            reply.view('account/nicknames', {
+                authenticated: request.auth.isAuthenticated,
+                admin: request.auth.credentials.admin,
+                activeAccount: true,
+                activeNicknames: true,
+                sidebar: 'account'
+            });
         }
     });
 
