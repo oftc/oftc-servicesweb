@@ -10,7 +10,8 @@ module.exports.init = function(server) {
                 authenticated: request.auth.isAuthenticated,
                 admin: request.auth.credentials && request.auth.credentials.admin,
                 activeNickname: true,
-                nickname: request.params.name
+                nickname: request.params.name,
+                title: 'Nickname result'
             });
         }
     });
@@ -24,7 +25,8 @@ module.exports.init = function(server) {
                 authenticated: request.auth.isAuthenticated,
                 admin: request.auth.credentials && request.auth.credentials.admin,
                 activeNickname: true,
-                nickname: request.params.name
+                nickname: request.params.name,
+                title: 'Nickname search'
             });
         }
     });

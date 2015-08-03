@@ -10,7 +10,8 @@ module.exports.init = function(server) {
                     authenticated: request.auth.isAuthenticated,
                     admin: request.auth.credentials.admin,
                     activeAdmin: true,
-                    sidebar: 'admin'
+                    sidebar: 'admin',
+                    title: 'Admin'
                 });
             }
         }
@@ -26,7 +27,8 @@ module.exports.init = function(server) {
                     admin: request.auth.credentials.admin,
                     activeAdmin: true,
                     activeAdminList: true,
-                    sidebar: 'admin'
+                    sidebar: 'admin',
+                    title: 'Admins List'
                 });
             }
         }
@@ -42,7 +44,8 @@ module.exports.init = function(server) {
                     admin: request.auth.credentials.admin,
                     activeAdmin: true,
                     activeAKillList: true,
-                    sidebar: 'admin'
+                    sidebar: 'admin',
+                    title: 'AKill List'
                 });
             }
         }

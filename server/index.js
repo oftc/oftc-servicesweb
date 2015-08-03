@@ -87,7 +87,8 @@ server.register(require('./hapi-auth-jwt'), function(err) {
                 reply.view('index', {
                     authenticated: request.auth.isAuthenticated,
                     admin: request.auth.credentials && request.auth.credentials.admin,
-                    activeHome: true
+                    activeHome: true,
+                    title: 'Home'
                 });
             }
         }

@@ -9,7 +9,8 @@ module.exports.init = function(server) {
             reply.view('login', {
                 authenticated: request.auth.isAuthenticated,
                 admin: request.auth.credentials && request.auth.credentials.admin,
-                activeLogin: true
+                activeLogin: true,
+                title: 'Login'
             });
         }
     });
@@ -34,7 +35,8 @@ module.exports.init = function(server) {
                     admin: request.auth.credentials.admin,
                     activeAccount: true,
                     activeDetails: true,
-                    sidebar: 'account'
+                    sidebar: 'account',
+                    title: 'Account Details'
                 });
             }
         }
@@ -49,7 +51,8 @@ module.exports.init = function(server) {
                 admin: request.auth.credentials.admin,
                 activeAccount: true,
                 activeNicknames: true,
-                sidebar: 'account'
+                sidebar: 'account',
+                title: 'Linked Nicknames'
             });
         }
     });
@@ -64,7 +67,8 @@ module.exports.init = function(server) {
                     admin: request.auth.credentials.admin,
                     activeAccount: true,
                     activeCertificates: true,
-                    sidebar: 'account'
+                    sidebar: 'account',
+                    title: 'SSL Certificates'
                 });
             }
         }
@@ -80,7 +84,8 @@ module.exports.init = function(server) {
                     admin: request.auth.credentials.admin,
                     activeAccount: true,
                     activeChannels: true,
-                    sidebar: 'account'
+                    sidebar: 'account',
+                    title: 'Channels'
                 });
             }
         }

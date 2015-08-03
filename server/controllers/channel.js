@@ -10,7 +10,8 @@ module.exports.init = function(server) {
                 admin: request.auth.credentials && request.auth.credentials.admin,
                 activeChannelDetails: true,
                 sidebar: 'channel',
-                channelName: request.params.name
+                channelName: request.params.name,
+                title: 'Channel Details - #' + request.params.name
             });
         }
     });
@@ -26,7 +27,8 @@ module.exports.init = function(server) {
                     activeChannel: true,
                     activeAccessList: true,
                     sidebar: 'channel',
-                    channelName: request.params.name
+                    channelName: request.params.name,
+                    title: 'Access List - #' + request.params.name
                 });
             }
         }
@@ -44,7 +46,8 @@ module.exports.init = function(server) {
                     activeAKickList: true,
                     sidebar: 'channel',
                     channelName: request.params.name,
-                    list: 'akicks'
+                    list: 'akicks',
+                    title: 'AKick List - #' + request.params.name
                 });
             }
         }
@@ -62,7 +65,8 @@ module.exports.init = function(server) {
                     activeQuietList: true,
                     sidebar: 'channel',
                     channelName: request.params.name,
-                    list: 'quiets'
+                    list: 'quiets',
+                    title: 'Quiets List - #' + request.params.name
                 });
             }
         }
@@ -80,7 +84,8 @@ module.exports.init = function(server) {
                     activeExceptList: true,
                     sidebar: 'channel',
                     channelName: request.params.name,
-                    list: 'excepts'
+                    list: 'excepts',
+                    title: 'Excepts List - #' + request.params.name
                 });
             }
         }
@@ -98,7 +103,8 @@ module.exports.init = function(server) {
                     activeInvexList: true,
                     sidebar: 'channel',
                     channelName: request.params.name,
-                    list: 'invexes'
+                    list: 'invexes',
+                    title: 'Invex List - #' + request.params.name
                 });
             }
         }
