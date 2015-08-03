@@ -1,4 +1,4 @@
-'uee strict';
+'use strict';
 
 module.exports.init = function(server) {
     server.route({
