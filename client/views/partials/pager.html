@@ -1,0 +1,38 @@
+<template id='pager-template'>
+        <nav>
+        <ul class="pagination">
+            <li data-bind="css: { disabled: currentPage() == 1 }">
+                <!-- ko if: currentPage() == 1 -->
+                    <span aria-hidden="true">&laquo;</span>
+                <!-- /ko -->
+                <!-- ko ifnot: currentPage() == 1 -->
+                    <a href="#" data-bind="click: function() { goToPage(1) }" aria-label="First">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                <!-- /ko -->
+            </li>
+            <li data-bind="css: { disabled: currentPage() == 1 }">
+                <a href="#" data-bind="click: function() { goToPage(currentPage() - 1) }" aria-label="Previous">
+                    <span aria-hidden="true">&lsaquo;</span>
+                </a>
+            </li>
+            <!-- ko foreach: pages() -->
+            <li data-bind="css: { active: $parent.currentPage() == $index() + 1 }">
+                <a href="#" data-bind="click: function() { $parent.goToPage($index() + 1) }">
+                    <span data-bind="text: $index() + 1"></span>
+                </a>
+            </li>
+            <!-- /ko -->
+            <li data-bind="css: { disabled: currentPage() == pageCount() }">
+                <a href="#" data-bind="click: function() { goToPage(currentPage() + 1) } " aria-label="Next">
+                    <span aria-hidden="true">&rsaquo;</span>
+                </a>
+            </li>
+            <li data-bind="css: { disabled: currentPage() == pageCount() }">
+                <a href="#" data-bind="click: function() { goToPage(pageCount()) }" aria-label="Last">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</template>

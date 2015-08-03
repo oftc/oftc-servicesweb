@@ -2,6 +2,8 @@
 
 var accountRepository = require('../../accountrepository.js');
 var adminRepository = require('../../adminrepository.js');
+var oData = require('odata-parser');
+var url = require('url');
 
 function adminAdmins(request, reply) {
     accountRepository.getAdmins(function(result) {
@@ -10,8 +12,12 @@ function adminAdmins(request, reply) {
 }
 
 function adminAKills(request, reply) {
-    adminRepository.getAKills(function(result) {
-        reply(result);
+    var queryStr = url.parse(request.url).search ? url.parse(request.url).search.substr(1) : '$skip=0';
+    var odata = oData.parse(queryStr);
+    adminRepository.getAKills(odata, function(result) {
+        adminRepository.getAKillsCount(function(count) {
+            reply({ totalCount: count, data: result });
+        });
     });
 }
 
