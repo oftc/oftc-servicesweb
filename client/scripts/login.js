@@ -2,19 +2,26 @@
 
 'use strict';
 
-var loginViewModel = {
-    username: ko.observable(''),
-    password: ko.observable(''),
+function LoginViewModel() {
+    var self = this;
 
-    login: function() {
-        $.post('/api/login', { nickname: this.username(), password: this.password() }, function(data) {
-            console.info(data);
-            location.href = '/';
+    self.username = ko.observable('');
+    self.password = ko.observable('');
+    self.errorMessage = ko.observable('');
+
+    self.login = function() {
+        $.post('/api/login', { nickname: self.username(), password: self.password() }, function(data) {
+            if(data.error) {
+                self.errorMessage(data.error);
+            }
+            else {
+                location.href = '/';
+            }
         })
         .fail(function() {
-            console.warn('failed');
+            self.errorMessage('An error occured submitting your information');
         });
-    }
-};
+    };
+}
 
-ko.applyBindings(loginViewModel);
+ko.applyBindings(new LoginViewModel());
