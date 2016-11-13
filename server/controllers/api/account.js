@@ -38,6 +38,7 @@ function accountGet(request, reply) {
 
     accountRepository.getById(id, function(result) {
         return reply({
+            primary_nickname: result.primary_nickname,
             cloak: result.cloak,
             email: result.email,
             url: result.url,
