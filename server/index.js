@@ -9,10 +9,7 @@ var Config = require('./config.js');
 var Controllers = require('./controllers');
 
 var server = new Hapi.Server();
-server.connection({
-    host: '::',
-    port: Config.port
-});
+server.connection(Config.listen);
 
 server.register(require('./hapi-auth-jwt'), function(err) {
     if(err) {
