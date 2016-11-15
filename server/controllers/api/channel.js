@@ -89,7 +89,7 @@ function channelAccessList(request, reply) {
 
 function queryResp(func, type, request, reply) {
     var channel = '#' + request.params.name;
-    func(channel, function(result) {
+    func(channel, type, function(result) {
         if(!result || !request.auth.isAuthenticated) {
             return reply(Boom.notFound());
         }
