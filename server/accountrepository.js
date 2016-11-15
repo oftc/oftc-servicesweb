@@ -8,7 +8,7 @@ exports.getByNick = function(nick, callback) {
                    'a.flag_verified, a.flag_cloak_enabled, a.flag_admin, ' +
                    'a.flag_email_verified, a.flag_private, a.language, ' +
                    'a.last_host, a.last_realname, a.last_quit_msg, ' +
-                   'a.last_quit_time, a.reg_time ' +
+                   'a.flag_verified, a.last_quit_time, a.reg_time ' +
                 'FROM account a ' +
                 'INNER JOIN nickname n ON a.id = n.account_id ' +
                 'WHERE lower(n.nick) = lower($1)';
@@ -30,7 +30,7 @@ exports.getById = function(id, callback) {
                    'a.flag_verified, a.flag_cloak_enabled, a.flag_admin, ' +
                    'a.flag_email_verified, a.flag_private, a.language, ' +
                    'a.last_host, a.last_realname, a.last_quit_msg, ' +
-                   'a.last_quit_time, a.reg_time ' +
+                   'a.flag_verified, a.last_quit_time, a.reg_time ' +
                 'FROM account a ' +
                 'WHERE a.id = $1';
 

@@ -42,6 +42,11 @@
         <dd>
             <span data-bind="css: { glyphicon: true, 'glyphicon-ok text-success': secure(), 'glyphicon-remove text-danger': !secure() }" aria-hidden="true"></span>
         </dd>
+        <dt>Verified</dt>
+        <dd>
+            <span data-bind="css: { glyphicon: true, 'glyphicon-ok text-success': verified(), 'glyphicon-remove text-danger': !verified() }" aria-hidden="true"></span>
+            <a href="/account/verify">Verify now</a>
+        </dd>
     </dl>
 </div>
 

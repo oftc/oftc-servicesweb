@@ -49,6 +49,7 @@ function accountGet(request, reply) {
             enforce: result.flag_enforce,
             secure: result.flag_secure,
             cloakEnabled: result.flag_cloak_enabled,
+            verified: result.flag_verified,
             private: result.flag_private,
             regTime: result.reg_time
         });
@@ -112,4 +113,14 @@ module.exports.init = function(server) {
             handler: accountChannels
         }
     });
+
+    /*
+    server.route({
+        method: 'GET',
+        path: '/api/account/verify',
+        config: {
+            handler: accountVerify
+        }
+    });
+    */
 };
