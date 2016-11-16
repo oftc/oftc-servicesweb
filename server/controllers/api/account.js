@@ -74,6 +74,11 @@ function accountChannels(request, reply) {
     });
 }
 
+function accountVerify(request, reply) {
+    console.log(request.payload.response);
+    reply('{verified: "hey yes"}');
+}
+
 module.exports.init = function(server) {
     server.route({
         method: 'POST',
@@ -114,13 +119,11 @@ module.exports.init = function(server) {
         }
     });
 
-    /*
     server.route({
-        method: 'GET',
+        method: 'POST',
         path: '/api/account/verify',
         config: {
             handler: accountVerify
         }
     });
-    */
 };

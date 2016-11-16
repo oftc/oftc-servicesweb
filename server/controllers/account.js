@@ -1,5 +1,7 @@
 'use strict';
 
+var config = require('../config.js');
+
 module.exports.init = function(server) {
     server.route({
         method: 'GET',
@@ -86,6 +88,24 @@ module.exports.init = function(server) {
                     activeChannels: true,
                     sidebar: 'account',
                     title: 'Channels'
+                });
+            }
+        }
+    });
+
+    server.route({
+        method: 'GET',
+        path: '/account/verify',
+        config: {
+            handler: function(request, reply) {
+                reply.view('account/verify', {
+                    authenticated: request.auth.isAuthenticated,
+                    admin: request.auth.credentials.admin,
+                    activeAccount: true,
+                    activeVerify: true,
+                    recaptchaSitekey: config.recaptcha_sitekey,
+                    sidebar: 'account',
+                    title: 'Account Verification'
                 });
             }
         }
