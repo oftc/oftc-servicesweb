@@ -77,3 +77,10 @@ exports.getAdmins = function(callback) {
         callback(result);
     });
 };
+
+exports.accountSetVerified = function(id) {
+    var query = 'UPDATE account SET flag_verified = true ' +
+                'WHERE id = $1 AND NOT flag_verified';
+
+    database.query(query, [id], function() {});
+};

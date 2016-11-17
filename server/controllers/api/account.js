@@ -4,6 +4,7 @@ var accountRepository = require('../../accountrepository.js');
 var channelRepository = require('../../channelrepository.js');
 var crypto = require('crypto');
 var jwt = require('jsonwebtoken');
+var requestjs = require('request');
 var config = require('../../config.js');
 
 function accountLogin(request, reply) {
@@ -75,8 +76,33 @@ function accountChannels(request, reply) {
 }
 
 function accountVerify(request, reply) {
-    console.log(request.payload.response);
-    reply('{verified: "hey yes"}');
+    var id = request.auth.credentials.id;
+
+    requestjs.post('https://www.google.com/recaptcha/api/siteverify',
+        { form:
+            {
+                secret: config.recaptcha_secretkey,
+                response: request.payload.response,
+            }
+        },
+        function(err, httpresponse, body) {
+            if (err || httpresponse.statusCode != 200) {
+                console.log("bad: " + httpresponse.statusCode);
+                reply('{"verified": false}');
+                return;
+            }
+            var info = JSON.parse(body);
+            if (!info.success) {
+                console.log("no success");
+                //console.log(httpresponse);
+                console.log(body);
+                reply('{"verified": false}');
+                return;
+            }
+            accountRepository.accountSetVerified(id);
+            console.log("success validating " + id);
+            reply('{"verified": true}');
+        });
 }
 
 module.exports.init = function(server) {

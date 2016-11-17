@@ -45,7 +45,7 @@
         <dt>Verified</dt>
         <dd>
             <span data-bind="css: { glyphicon: true, 'glyphicon-ok text-success': verified(), 'glyphicon-remove text-danger': !verified() }" aria-hidden="true"></span>
-            <a href="/account/verify">Verify now</a>
+            <span style="display:none;" data-bind="style: { display: verified() ? 'none' : 'inline' }"><a href="/account/verify">Verify now</a></span>
         </dd>
     </dl>
 </div>

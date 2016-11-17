@@ -1,8 +1,21 @@
-<script src='https://www.google.com/recaptcha/api.js'></script>
+<script src='https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit' async defer></script>
+
+<script type="text/javascript">
+    /* called from onloadCallback, but placed here so recaptchaSitekey is available */
+    var renderCaptcha = function() {
+        grecaptcha.render('captcha', {
+            'sitekey': '{{ recaptchaSitekey }}',
+            'callback': verifyCallback,
+        });
+    };
+</script>
 
 <script src="/scripts/account/verify.js"></script>
 
-<div class="g-recaptcha" data-sitekey="{{ recaptchaSitekey }}" data-callback="verifyCallback"></div>
+<p style="display:none;" data-bind="style: { display: verified() ? 'none' : 'inline' }">
+Complete the CATCHA challenge to verify your NickServ account
+</p>
 
-Dragons here:
-<div data-bind="text: verified "></div>
+<div id="captcha"></div>
+
+<p style="display:none;" data-bind="style: { display: verified() ? 'inline' : 'none' }">Your NickServ account has been verified</p>
