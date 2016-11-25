@@ -7,7 +7,9 @@ module.exports = {
         user:     'ircservices',  // env var: PGUSER
         database: 'ircservices',  // env var: PGDATABASE
         password: 'ircservices',  // env var: PGPASSWORD
+        host:     '',             // env var: PGHOST
         port:     5432,           // env var: PGPORT
+        ssl:      true,
         max:      10,             // max number of clients in the pool
         idleTimeoutMillis: 30000, // how long a client is allowed to remain idle before being closed
     },
