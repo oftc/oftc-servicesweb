@@ -30,9 +30,10 @@ function nicknameGet(request, reply) {
 module.exports.init = function (server) {
     server.route({
         method: 'GET',
-        plugins: { 'hapi-auth-jwt': { redirectWhenNotAuthed: false } },
         path: '/api/nickname/{name}',
-        config: { auth: { mode: 'try' } },
+        config: {
+            plugins: { 'hapi-auth-jwt': { redirectWhenNotAuthed: false } }, 
+            auth: { mode: 'try' } },
         handler: nicknameGet
     });
 };

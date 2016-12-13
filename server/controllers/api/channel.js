@@ -111,42 +111,54 @@ function queryResp(func, type, request, reply) {
 module.exports.init = function (server) {
     server.route({
         method: 'GET',
-        plugins: { 'hapi-auth-jwt': { redirectWhenNotAuthed: false } },
+        config: {
+            plugins: { 'hapi-auth-jwt': { redirectWhenNotAuthed: false } }
+        },
         path: '/api/channel/{name}',
         handler: channelGet
     });
 
     server.route({
         method: 'GET',
-        plugins: { 'hapi-auth-jwt': { redirectWhenNotAuthed: false } },
+        config: {
+            plugins: { 'hapi-auth-jwt': { redirectWhenNotAuthed: false } }
+        },
         path: '/api/channel/{name}/access',
         handler: channelAccessList
     });
 
     server.route({
         method: 'GET',
-        plugins: { 'hapi-auth-jwt': { redirectWhenNotAuthed: false } },
+        config: {
+            plugins: { 'hapi-auth-jwt': { redirectWhenNotAuthed: false } }
+        },
         path: '/api/channel/{name}/akicks',
         handler: queryResp.bind(server, channelRepository.getList, AKICK_LIST)
     });
 
     server.route({
         method: 'GET',
-        plugins: { 'hapi-auth-jwt': { redirectWhenNotAuthed: false } },
+        config: {
+            plugins: { 'hapi-auth-jwt': { redirectWhenNotAuthed: false } },
+        },
         path: '/api/channel/{name}/quiets',
         handler: queryResp.bind(server, channelRepository.getList, QUIET_LIST)
     });
 
     server.route({
         method: 'GET',
-        plugins: { 'hapi-auth-jwt': { redirectWhenNotAuthed: false } },
+        config: {
+            plugins: { 'hapi-auth-jwt': { redirectWhenNotAuthed: false } }
+        },
         path: '/api/channel/{name}/excepts',
         handler: queryResp.bind(server, channelRepository.getList, EXCEPT_LIST)
     });
 
     server.route({
         method: 'GET',
-        plugins: { 'hapi-auth-jwt': { redirectWhenNotAuthed: false } },
+        config: {
+            plugins: { 'hapi-auth-jwt': { redirectWhenNotAuthed: false } }
+        },
         path: '/api/channel/{name}/invexes',
         handler: queryResp.bind(server, channelRepository.getList, INVEX_LIST)
     });
