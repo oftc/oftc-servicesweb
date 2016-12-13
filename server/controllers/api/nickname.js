@@ -4,7 +4,7 @@ var nicknameRepository = require('../../nicknamerepository.js');
 var Boom = require('boom');
 
 function nicknameGet(request, reply) {
-    nicknameRepository.getByName(request.params.name, function(result) {
+    nicknameRepository.getByName(request.params.name, function (result) {
         if(!result) {
             return reply(Boom.notFound());
         }
@@ -27,9 +27,10 @@ function nicknameGet(request, reply) {
     });
 }
 
-module.exports.init = function(server) {
+module.exports.init = function (server) {
     server.route({
         method: 'GET',
+        plugins: { 'hapi-auth-jwt': { redirectWhenNotAuthed: false } },
         path: '/api/nickname/{name}',
         config: { auth: { mode: 'try' } },
         handler: nicknameGet

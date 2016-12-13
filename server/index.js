@@ -15,7 +15,8 @@ server.register(require('./hapi-auth-jwt'), function(err) {
     if(err) {
         console.info(err);
     }
-    server.auth.strategy('default', 'jwt', true, { requiresAdmin: false });
+
+    server.auth.strategy('default', 'jwt', true, { requiresAdmin: false, redirectWhenNotAuthed: true });
 
     server.views({
         engines: {
