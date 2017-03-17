@@ -4,7 +4,7 @@ var Config = require('./config.js');
 var jwt = require('jsonwebtoken');
 var Boom = require('boom');
 
-var implementation = function (server, options) {
+var implementation = function(server, options) {
     server.state('authToken', {
         ttl: null,
         isSecure: false,
@@ -16,11 +16,11 @@ var implementation = function (server, options) {
     });
 
     return {
-        authenticate: function (request, reply) {
+        authenticate: function(request, reply) {
             var token = request.headers.authorization || request.state.authToken;
 
             if(token) {
-                jwt.verify(token, Config.tokenSecret, function (err, decoded) {
+                jwt.verify(token, Config.tokenSecret, function(err, decoded) {
                     if(err) {
                         return reply(Boom.unauthorized(null, ''));
                     }
@@ -35,18 +35,13 @@ var implementation = function (server, options) {
                 });
             }
             else {
-                if(options.redirectWhenNotAuthed) {
-                    reply.redirect('/login');
-                }
-                else {
-                    reply(Boom.unauthorized(null, ''));
-                }
+                reply(Boom.unauthorized(null, ''));
             }
         }
     };
 };
 
-exports.register = function (server, options, next) {
+exports.register = function(server, options, next) {
     server.auth.scheme('jwt', implementation);
     next();
 };

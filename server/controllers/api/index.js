@@ -5,7 +5,7 @@ var channel = require('./channel.js');
 var nickname = require('./nickname.js');
 var admin = require('./admin.js');
 
-module.exports.init = function (server) {
+module.exports.init = function(server) {
     account.init(server);
     channel.init(server);
     nickname.init(server);

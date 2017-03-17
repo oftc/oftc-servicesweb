@@ -8,7 +8,7 @@ var requestjs = require('request');
 var config = require('../../config.js');
 
 function accountLogin(request, reply) {
-    accountRepository.getByNick(request.payload.nickname, function (result) {
+    accountRepository.getByNick(request.payload.nickname, function(result) {
         if(!result) {
             return reply({ error: 'Invalid username or password' });
         }
@@ -37,7 +37,7 @@ function accountLogin(request, reply) {
 function accountGet(request, reply) {
     var id = request.auth.credentials.id;
 
-    accountRepository.getById(id, function (result) {
+    accountRepository.getById(id, function(result) {
         return reply({
             primary_nickname: result.primary_nickname,
             cloak: result.cloak,
@@ -58,19 +58,19 @@ function accountGet(request, reply) {
 }
 
 function accountNicknames(request, reply) {
-    accountRepository.getNicknames(request.auth.credentials.id, function (result) {
+    accountRepository.getNicknames(request.auth.credentials.id, function(result) {
         reply(result);
     });
 }
 
 function accountCertificates(request, reply) {
-    accountRepository.getCertificates(request.auth.credentials.id, function (result) {
+    accountRepository.getCertificates(request.auth.credentials.id, function(result) {
         reply(result);
     });
 }
 
 function accountChannels(request, reply) {
-    channelRepository.getChannelsForAccount(request.auth.credentials.id, function (result) {
+    channelRepository.getChannelsForAccount(request.auth.credentials.id, function(result) {
         reply(result);
     });
 }
@@ -79,37 +79,35 @@ function accountVerify(request, reply) {
     var id = request.auth.credentials.id;
 
     requestjs.post('https://www.google.com/recaptcha/api/siteverify',
-        {
-            form:
+        { form:
             {
                 secret: config.recaptcha_secretkey,
                 response: request.payload.response,
             }
         },
-        function (err, httpresponse, body) {
-            if(err || httpresponse.statusCode != 200) {
-                console.log('bad: ' + httpresponse.statusCode);
+        function(err, httpresponse, body) {
+            if (err || httpresponse.statusCode != 200) {
+                console.log("bad: " + httpresponse.statusCode);
                 reply('{"verified": false}');
                 return;
             }
             var info = JSON.parse(body);
-            if(!info.success) {
-                console.log('no success');
+            if (!info.success) {
+                console.log("no success");
                 //console.log(httpresponse);
                 console.log(body);
                 reply('{"verified": false}');
                 return;
             }
             accountRepository.accountSetVerified(id);
-            console.log('success validating ' + id);
+            console.log("success validating " + id);
             reply('{"verified": true}');
         });
 }
 
-module.exports.init = function (server) {
+module.exports.init = function(server) {
     server.route({
         method: 'POST',
-        plugins: { 'hapi-auth-jwt': { redirectWhenNotAuthed: false } },
         config: { auth: { mode: 'try' } },
         path: '/api/login',
         handler: accountLogin
@@ -117,7 +115,6 @@ module.exports.init = function (server) {
 
     server.route({
         method: 'GET',
-        plugins: { 'hapi-auth-jwt': { redirectWhenNotAuthed: false } },
         path: '/api/account/{id?}',
         config: {
             handler: accountGet
@@ -126,7 +123,6 @@ module.exports.init = function (server) {
 
     server.route({
         method: 'GET',
-        plugins: { 'hapi-auth-jwt': { redirectWhenNotAuthed: false } },
         path: '/api/account/nicknames/{id?}',
         config: {
             handler: accountNicknames
@@ -135,7 +131,6 @@ module.exports.init = function (server) {
 
     server.route({
         method: 'GET',
-        plugins: { 'hapi-auth-jwt': { redirectWhenNotAuthed: false } },
         path: '/api/account/certificates/{id?}',
         config: {
             handler: accountCertificates
@@ -144,7 +139,6 @@ module.exports.init = function (server) {
 
     server.route({
         method: 'GET',
-        plugins: { 'hapi-auth-jwt': { redirectWhenNotAuthed: false } },
         path: '/api/account/channels/{id?}',
         config: {
             handler: accountChannels
@@ -153,7 +147,6 @@ module.exports.init = function (server) {
 
     server.route({
         method: 'POST',
-        plugins: { 'hapi-auth-jwt': { redirectWhenNotAuthed: false } },
         path: '/api/account/verify',
         config: {
             handler: accountVerify

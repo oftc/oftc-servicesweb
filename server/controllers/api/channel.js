@@ -18,7 +18,7 @@ function addPrivateProperties(channel, result) {
 
 function channelGet(request, reply) {
     var channelName = '#' + request.params.name;
-    channelRepository.getByName(channelName, function (result) {
+    channelRepository.getByName(channelName, function(result) {
         if(!result) {
             return reply(Boom.notFound('Channel not found'));
         }
@@ -56,7 +56,7 @@ function channelGet(request, reply) {
             return reply(channel);
         }
 
-        channelRepository.isOnAccessList(channelName, request.auth.credentials.id, function (isOn) {
+        channelRepository.isOnAccessList(channelName, request.auth.credentials.id, function(isOn) {
             if(isOn) {
                 channel = addPrivateProperties(channel, result);
             }
@@ -68,7 +68,7 @@ function channelGet(request, reply) {
 
 function channelAccessList(request, reply) {
     var channel = '#' + request.params.name;
-    channelRepository.getAccessList(channel, function (result) {
+    channelRepository.getAccessList(channel, function(result) {
         if(!result || !request.auth.isAuthenticated) {
             return reply(Boom.notFound());
         }
@@ -77,7 +77,7 @@ function channelAccessList(request, reply) {
             return reply(result);
         }
 
-        channelRepository.isOnAccessList(channel, request.auth.credentials.id, function (isOn) {
+        channelRepository.isOnAccessList(channel, request.auth.credentials.id, function(isOn) {
             if(isOn) {
                 return reply(result);
             }
@@ -89,7 +89,7 @@ function channelAccessList(request, reply) {
 
 function queryResp(func, type, request, reply) {
     var channel = '#' + request.params.name;
-    func(channel, type, function (result) {
+    func(channel, type, function(result) {
         if(!result || !request.auth.isAuthenticated) {
             return reply(Boom.notFound());
         }
@@ -98,7 +98,7 @@ function queryResp(func, type, request, reply) {
             return reply(result);
         }
 
-        channelRepository.isOnAccessList(channel, request.auth.credentials.id, function (isOn) {
+        channelRepository.isOnAccessList(channel, request.auth.credentials.id, function(isOn) {
             if(isOn) {
                 reply(result);
             }
@@ -108,45 +108,39 @@ function queryResp(func, type, request, reply) {
     });
 }
 
-module.exports.init = function (server) {
+module.exports.init = function(server) {
     server.route({
-        method: 'GET',
-        plugins: { 'hapi-auth-jwt': { redirectWhenNotAuthed: false } },
-        path: '/api/channel/{name}',
-        handler: channelGet
+       method: 'GET',
+       path: '/api/channel/{name}',
+       handler: channelGet
     });
 
     server.route({
         method: 'GET',
-        plugins: { 'hapi-auth-jwt': { redirectWhenNotAuthed: false } },
         path: '/api/channel/{name}/access',
         handler: channelAccessList
     });
 
     server.route({
         method: 'GET',
-        plugins: { 'hapi-auth-jwt': { redirectWhenNotAuthed: false } },
         path: '/api/channel/{name}/akicks',
         handler: queryResp.bind(server, channelRepository.getList, AKICK_LIST)
     });
 
     server.route({
         method: 'GET',
-        plugins: { 'hapi-auth-jwt': { redirectWhenNotAuthed: false } },
         path: '/api/channel/{name}/quiets',
         handler: queryResp.bind(server, channelRepository.getList, QUIET_LIST)
     });
 
     server.route({
         method: 'GET',
-        plugins: { 'hapi-auth-jwt': { redirectWhenNotAuthed: false } },
         path: '/api/channel/{name}/excepts',
         handler: queryResp.bind(server, channelRepository.getList, EXCEPT_LIST)
     });
 
     server.route({
         method: 'GET',
-        plugins: { 'hapi-auth-jwt': { redirectWhenNotAuthed: false } },
         path: '/api/channel/{name}/invexes',
         handler: queryResp.bind(server, channelRepository.getList, INVEX_LIST)
     });
