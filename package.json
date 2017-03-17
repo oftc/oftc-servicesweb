@@ -19,7 +19,6 @@
     "knockout-mapping": "^2.5.0",
     "moment": "^2.10.5",
     "odata-parser": "^1.2.1",
-    "pg": "^4.4.0",
-    "request": "^2.79.0"
+    "pg": "^4.4.0"
   }
 }
