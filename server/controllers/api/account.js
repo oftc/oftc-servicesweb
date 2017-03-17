@@ -109,55 +109,53 @@ function accountVerify(request, reply) {
 module.exports.init = function (server) {
     server.route({
         method: 'POST',
-        config: {
-            auth: { mode: 'try' },
-            plugins: { 'hapi-auth-jwt': { redirectWhenNotAuthed: false } }
-        },
+        plugins: { 'hapi-auth-jwt': { redirectWhenNotAuthed: false } },
+        config: { auth: { mode: 'try' } },
         path: '/api/login',
         handler: accountLogin
     });
 
     server.route({
         method: 'GET',
+        plugins: { 'hapi-auth-jwt': { redirectWhenNotAuthed: false } },
         path: '/api/account/{id?}',
         config: {
-            handler: accountGet,
-            plugins: { 'hapi-auth-jwt': { redirectWhenNotAuthed: false } },
+            handler: accountGet
         }
     });
 
     server.route({
         method: 'GET',
+        plugins: { 'hapi-auth-jwt': { redirectWhenNotAuthed: false } },
         path: '/api/account/nicknames/{id?}',
         config: {
-            plugins: { 'hapi-auth-jwt': { redirectWhenNotAuthed: false } },
             handler: accountNicknames
         }
     });
 
     server.route({
         method: 'GET',
+        plugins: { 'hapi-auth-jwt': { redirectWhenNotAuthed: false } },
         path: '/api/account/certificates/{id?}',
         config: {
-            plugins: { 'hapi-auth-jwt': { redirectWhenNotAuthed: false } },
             handler: accountCertificates
         }
     });
 
     server.route({
         method: 'GET',
+        plugins: { 'hapi-auth-jwt': { redirectWhenNotAuthed: false } },
         path: '/api/account/channels/{id?}',
         config: {
-            plugins: { 'hapi-auth-jwt': { redirectWhenNotAuthed: false } },
             handler: accountChannels
         }
     });
 
     server.route({
         method: 'POST',
+        plugins: { 'hapi-auth-jwt': { redirectWhenNotAuthed: false } },
         path: '/api/account/verify',
         config: {
-            plugins: { 'hapi-auth-jwt': { redirectWhenNotAuthed: false } },
             handler: accountVerify
         }
     });
