@@ -1,14 +1,10 @@
-/* global __dirname */
+const Handlebars = require('handlebars');
+const Hapi = require('hapi');
+const Path = require('path');
+const Config = require('./config.js');
+const Controllers = require('./controllers');
 
-'use strict';
-
-var Handlebars = require('handlebars');
-var Hapi = require('hapi');
-var Path = require('path');
-var Config = require('./config.js');
-var Controllers = require('./controllers');
-
-var server = new Hapi.Server();
+let server = new Hapi.Server();
 server.connection(Config.listen);
 
 server.register(require('./hapi-auth-jwt'), function(err) {

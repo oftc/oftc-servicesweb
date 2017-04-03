@@ -1,12 +1,10 @@
-'use strict';
-
-var database = require('./database.js');
+const database = require('./database.js');
 
 exports.getAKills = function(odata, callback) {
-    var limit = odata.$top || 25;
-    var offset = odata.$skip * limit || 0;
+    let limit = odata.$top || 25;
+    let offset = odata.$skip * limit || 0;
 
-    var query = 'SELECT ns.nick setter, ak.mask, ak.reason, ak.time, ak.duration ' +
+    let query = 'SELECT ns.nick setter, ak.mask, ak.reason, ak.time, ak.duration ' +
                 'FROM akill ak ' +
                 'LEFT OUTER JOIN account a ON ak.setter = a.id ' +
                 'LEFT OUTER JOIN nickname ns ON ns.id = a.primary_nick ' +
@@ -19,7 +17,7 @@ exports.getAKills = function(odata, callback) {
 };
 
 exports.getAKillsCount = function(callback) {
-    var query = 'SELECT COUNT(*) ' +
+    let query = 'SELECT COUNT(*) ' +
                 'FROM akill ak';
 
     database.query(query, [], function(result) {

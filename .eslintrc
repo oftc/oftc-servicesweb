@@ -1,22 +1,45 @@
-rules:
-    indent: [2, 4]
-    quotes: [1, "single"]
-    strict: [1, "global"]
-    global-strict: 0
-    brace-style: [2, "stroustrup"]
-    no-cond-assign: [2]
-    no-debugger: [1]
-    no-empty: [1]
-    no-extra-semi: [2]
-    no-sparse-arrays: [1]
-    curly: [2, "all"]
-    no-fallthrough: [2]
-    no-multi-spaces: [2]
-    no-mixed-spaces-and-tabs: [1]
-    space-before-blocks: [1]
-    space-in-parens: [2, "never"]
-    no-multiple-empty-lines: [1]
-    eol-last: [2]
+{
+  "extends": "eslint:recommended",
 
-env:
-    node: true
+  "rules": {
+    "indent": [2, 4, {"SwitchCase": 1}],
+    "quotes": [2, "single"],
+    "strict": [1, "global"],
+    "global-strict": 0,
+    "brace-style": [2, "1tbs"],
+    "no-sparse-arrays": [1],
+    "eqeqeq": [2],
+    "no-else-return": [2],
+    "no-extra-bind": [2],
+    "curly": [2, "all"],
+    "no-multi-spaces": [2],
+    "no-invalid-this": [2],
+    "no-useless-escape": [1],
+    "no-useless-concat": [1],
+    "no-useless-constructor": [1],
+    "array-bracket-spacing": [1, "never"],
+    "block-spacing": [2, "always"],
+    "camelcase": [1, { "properties": "never"}],
+    "comma-dangle": [1],
+    "space-before-blocks": [2],
+    "space-in-parens": [2, "never"],
+    "space-infix-ops": [2],
+    "no-multiple-empty-lines": [2],
+    "eol-last": [2],
+    "semi": [2],
+    "keyword-spacing": [2, {"overrides": 
+      { "if": { "after": false }, "for": { "after": false }, "while": { "after": false }, "switch": { "after": false }, "catch": { "after": false } } }]
+  },
+
+  "parser": "babel-eslint",
+
+  "env": {
+    "browser": true,
+    "node": true,
+    "es6": true
+  },
+
+  "ecmaFeatures": {
+    "modules": false
+  }
+}

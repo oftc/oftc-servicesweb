@@ -9,16 +9,21 @@
   "author": "Stuart Walsh <stu@ipng.org.uk>",
   "license": "MIT",
   "dependencies": {
+    "body-parser": "^1.17.1",
     "boom": "^2.8.0",
     "bootstrap": "^3.3.5",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.15.2",
+    "express-handlebars": "^3.0.0",
     "handlebars": "^3.0.3",
     "hapi": "^8.8.0",
     "jquery": "^2.1.4",
-    "jsonwebtoken": "^5.0.4",
+    "jsonwebtoken": "^5.7.0",
     "knockout": "^3.3.0",
     "knockout-mapping": "^2.5.0",
     "moment": "^2.10.5",
     "odata-parser": "^1.2.1",
-    "pg": "^4.4.0"
+    "pg": "^4.4.0",
+    "winston": "^2.3.1"
   }
 }

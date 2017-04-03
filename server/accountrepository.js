@@ -1,9 +1,7 @@
-'use strict';
-
-var database = require('./database.js');
+const database = require('./database.js');
 
 exports.getByNick = function(nick, callback) {
-    var query = 'SELECT a.id, a.primary_nick, a.password, a.salt, a.url, ' +
+    let query = 'SELECT a.id, a.primary_nick, a.password, a.salt, a.url, ' +
                    'a.email, a.cloak, a.flag_enforce, a.flag_secure, ' +
                    'a.flag_verified, a.flag_cloak_enabled, a.flag_admin, ' +
                    'a.flag_email_verified, a.flag_private, a.language, ' +
@@ -23,7 +21,7 @@ exports.getByNick = function(nick, callback) {
 };
 
 exports.getById = function(id, callback) {
-    var query = 'SELECT a.id, a.primary_nick, ' +
+    let query = 'SELECT a.id, a.primary_nick, ' +
                    '(SELECT nick FROM nickname n WHERE n.id = a.primary_nick) AS primary_nickname, ' +
                    'a.password, a.salt, a.url, ' +
                    'a.email, a.cloak, a.flag_enforce, a.flag_secure, ' +
@@ -44,7 +42,7 @@ exports.getById = function(id, callback) {
 };
 
 exports.getNicknames = function(id, callback) {
-    var query = 'SELECT n.nick, n.reg_time, n.last_seen ' +
+    let query = 'SELECT n.nick, n.reg_time, n.last_seen ' +
                 'FROM nickname n ' +
                 'INNER JOIN account a ON a.id = n.account_id ' +
                 'WHERE a.id = $1 ' +
@@ -56,7 +54,7 @@ exports.getNicknames = function(id, callback) {
 };
 
 exports.getCertificates = function(id, callback) {
-    var query = 'SELECT f.fingerprint, n.nick ' +
+    let query = 'SELECT f.fingerprint, n.nick ' +
                 'FROM account_fingerprint f ' +
                 'INNER JOIN account a ON a.id = f.account_id ' +
                 'LEFT OUTER JOIN nickname n ON f.nickname_id = n.id ' +
@@ -68,7 +66,7 @@ exports.getCertificates = function(id, callback) {
 };
 
 exports.getAdmins = function(callback) {
-    var query = 'SELECT n.nick ' +
+    let query = 'SELECT n.nick ' +
                 'FROM account a ' +
                 'INNER JOIN nickname n ON a.primary_nick = n.id ' +
                 'WHERE a.flag_admin = True';
@@ -79,7 +77,7 @@ exports.getAdmins = function(callback) {
 };
 
 exports.accountSetVerified = function(id) {
-    var query = 'UPDATE account SET flag_verified = true ' +
+    let query = 'UPDATE account SET flag_verified = true ' +
                 'WHERE id = $1 AND NOT flag_verified';
 
     database.query(query, [id], function() {});

@@ -1,27 +1,25 @@
-'use strict';
+const accountRepository = require('../../accountrepository.js');
+const channelRepository = require('../../channelrepository.js');
+const crypto = require('crypto');
+const jwt = require('jsonwebtoken');
+const requestjs = require('request');
+const config = require('../../config.js');
 
-var accountRepository = require('../../accountrepository.js');
-var channelRepository = require('../../channelrepository.js');
-var crypto = require('crypto');
-var jwt = require('jsonwebtoken');
-var requestjs = require('request');
-var config = require('../../config.js');
-
-function accountLogin(request, reply) {
-    accountRepository.getByNick(request.payload.nickname, function(result) {
+function accountLogin(req, res) {
+    accountRepository.getByNick(req.body.nickname, function(result) {
         if(!result) {
-            return reply({ error: 'Invalid username or password' });
+            return res.send({ error: 'Invalid username or password' });
         }
 
-        var shasum = crypto.createHash('sha1');
-        shasum.update(request.payload.password + result.salt);
-        var hash = shasum.digest('hex').toUpperCase();
+        let shasum = crypto.createHash('sha1');
+        shasum.update(req.body.password + result.salt);
+        let hash = shasum.digest('hex').toUpperCase();
 
         if(hash !== result.password.toUpperCase()) {
-            return reply({ error: 'Invalid username or password' });
+            return res.send({ error: 'Invalid username or password' });
         }
 
-        var nickname = {
+        let nickname = {
             id: result.id + '',
             nickname: result.nick,
             email: result.email,
@@ -30,15 +28,16 @@ function accountLogin(request, reply) {
 
         nickname.token = jwt.sign(nickname, config.tokenSecret);
 
-        reply(nickname).state('authToken', nickname.token);
+        res.send(nickname);
+        res.cookie('authToken', nickname.token);
     });
 }
 
-function accountGet(request, reply) {
-    var id = request.auth.credentials.id;
+function accountGet(req, res) {
+    let id = req.user.id;
 
     accountRepository.getById(id, function(result) {
-        return reply({
+        return res.send({
             primary_nickname: result.primary_nickname,
             cloak: result.cloak,
             email: result.email,
@@ -57,61 +56,52 @@ function accountGet(request, reply) {
     });
 }
 
-function accountNicknames(request, reply) {
-    accountRepository.getNicknames(request.auth.credentials.id, function(result) {
-        reply(result);
+function accountNicknames(req, res) {
+    accountRepository.getNicknames(req.user.id, function(result) {
+        res.send(result);
     });
 }
 
-function accountCertificates(request, reply) {
-    accountRepository.getCertificates(request.auth.credentials.id, function(result) {
-        reply(result);
+function accountCertificates(req, res) {
+    accountRepository.getCertificates(req.user.id, function(result) {
+        res.send(result);
     });
 }
 
-function accountChannels(request, reply) {
-    channelRepository.getChannelsForAccount(request.auth.credentials.id, function(result) {
-        reply(result);
+function accountChannels(req, res) {
+    channelRepository.getChannelsForAccount(req.user.id, function(result) {
+        res.send(result);
     });
 }
 
-function accountVerify(request, reply) {
-    var id = request.auth.credentials.id;
+function accountVerify(req, res) {
+    let id = req.user.id;
 
-    requestjs.post('https://www.google.com/recaptcha/api/siteverify',
-        { form:
-            {
-                secret: config.recaptcha_secretkey,
-                response: request.payload.response,
-            }
-        },
-        function(err, httpresponse, body) {
-            if (err || httpresponse.statusCode != 200) {
-                console.log("bad: " + httpresponse.statusCode);
-                reply('{"verified": false}');
-                return;
-            }
-            var info = JSON.parse(body);
-            if (!info.success) {
-                console.log("no success");
-                //console.log(httpresponse);
-                console.log(body);
-                reply('{"verified": false}');
-                return;
-            }
-            accountRepository.accountSetVerified(id);
-            console.log("success validating " + id);
-            reply('{"verified": true}');
-        });
+    requestjs.post('https://www.google.com/recaptcha/api/siteverify', { 
+        form: {
+            secret: config.recaptcha_secretkey,
+            response: req.body.response
+        }
+    },
+    function(err, httpresponse, body) {
+        if(err || httpresponse.statusCode !== 200) {
+            res.send({ verified: false });
+            return;
+        }
+        
+        let info = JSON.parse(body);
+        if(!info.success) {
+            res.send({ verified: false });
+            return;
+        }
+        
+        accountRepository.accountSetVerified(id);
+        res.send({ verified: true });
+    });
 }
 
 module.exports.init = function(server) {
-    server.route({
-        method: 'POST',
-        config: { auth: { mode: 'try' } },
-        path: '/api/login',
-        handler: accountLogin
-    });
+    server.post('/api/login', accountLogin);
 
     server.route({
         method: 'GET',

@@ -1,9 +1,7 @@
-'use strict';
-
-var database = require('./database.js');
+const database = require('./database.js');
 
 exports.getChannelsForAccount = function(id, callback) {
-    var query = 'SELECT c.channel, ca.level ' +
+    let query = 'SELECT c.channel, ca.level ' +
                 'FROM channel c ' +
                 'INNER JOIN channel_access ca ON ca.channel_id = c.id ' +
                 'INNER JOIN account a ON a.id = ca.account_id ' +
@@ -16,7 +14,7 @@ exports.getChannelsForAccount = function(id, callback) {
 };
 
 exports.getByName = function(name, callback) {
-    var query = 'SELECT id, channel, flag_private, flag_restricted, flag_topic_lock, ' +
+    let query = 'SELECT id, channel, flag_private, flag_restricted, flag_topic_lock, ' +
                    'flag_verbose, flag_autolimit, flag_expirebans, flag_floodserv, ' +
                    'flag_autoop, flag_autovoice, flag_leaveops, flag_autosave, ' +
                    'description, url, email, entrymsg, topic, mlock, expirebans_lifetime, ' +
@@ -30,7 +28,7 @@ exports.getByName = function(name, callback) {
 };
 
 exports.getAccessList = function(name, callback) {
-    var query = 'SELECT n.nick, ca.level ' +
+    let query = 'SELECT n.nick, ca.level ' +
                 'FROM channel_access ca ' +
                 'INNER JOIN account a ON ca.account_id = a.id ' +
                 'INNER JOIN nickname n ON n.id = a.primary_nick ' +
@@ -44,7 +42,7 @@ exports.getAccessList = function(name, callback) {
 };
 
 exports.isOnAccessList = function(name, account, callback) {
-    var query = 'SELECT 1 ' +
+    let query = 'SELECT 1 ' +
                 'FROM channel c ' +
                 'INNER JOIN channel_access ca ' +
                 'ON c.id = ca.channel_id ' +
@@ -60,7 +58,7 @@ exports.isOnAccessList = function(name, account, callback) {
 };
 
 exports.getList = function(name, list, callback) {
-    var query = 'SELECT ns.nick setter, nt.nick target, ak.mask, ak.reason, ak.time, ak.duration, ak.chmode ' +
+    let query = 'SELECT ns.nick setter, nt.nick target, ak.mask, ak.reason, ak.time, ak.duration, ak.chmode ' +
                 'FROM channel_akick ak ' +
                 'INNER JOIN account a ON ak.setter = a.id ' +
                 'LEFT OUTER JOIN account at ON ak.target = at.id ' +
