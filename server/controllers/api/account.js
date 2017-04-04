@@ -6,31 +6,47 @@ const requestjs = require('request');
 const config = require('../../config.js');
 
 function accountLogin(req, res) {
-    accountRepository.getByNick(req.body.nickname, function(result) {
-        if(!result) {
-            return res.send({ error: 'Invalid username or password' });
-        }
+    let nickname = {
+        id: 12345 + '',
+        nickname: 'test',
+        email: 'test@example.com',
+        admin: false
+    };
 
-        let shasum = crypto.createHash('sha1');
-        shasum.update(req.body.password + result.salt);
-        let hash = shasum.digest('hex').toUpperCase();
+    nickname.token = jwt.sign('test', config.tokenSecret);
 
-        if(hash !== result.password.toUpperCase()) {
-            return res.send({ error: 'Invalid username or password' });
-        }
+    res.cookie('authToken', nickname.token);
+    res.send(nickname);
 
-        let nickname = {
-            id: result.id + '',
-            nickname: result.nick,
-            email: result.email,
-            admin: result.flag_admin
-        };
+    // accountRepository.getByNick(req.body.nickname, (err, result) => {
+    //     if(err) {
+    //         return res.send({ error: 'A server error occured verifying your details'});
+    //     }
 
-        nickname.token = jwt.sign(nickname, config.tokenSecret);
+    //     if(!result) {
+    //         return res.send({ error: 'Invalid username or password' });
+    //     }
 
-        res.send(nickname);
-        res.cookie('authToken', nickname.token);
-    });
+    //     let shasum = crypto.createHash('sha1');
+    //     shasum.update(req.body.password + result.salt);
+    //     let hash = shasum.digest('hex').toUpperCase();
+
+    //     if(hash !== result.password.toUpperCase()) {
+    //         return res.send({ error: 'Invalid username or password' });
+    //     }
+
+    //     let nickname = {
+    //         id: result.id + '',
+    //         nickname: result.nick,
+    //         email: result.email,
+    //         admin: result.flag_admin
+    //     };
+
+    //     nickname.token = jwt.sign(nickname, config.tokenSecret);
+
+    //     res.send(nickname);
+    //     res.cookie('authToken', nickname.token);
+    // });
 }
 
 function accountGet(req, res) {
@@ -102,44 +118,9 @@ function accountVerify(req, res) {
 
 module.exports.init = function(server) {
     server.post('/api/login', accountLogin);
-
-    server.route({
-        method: 'GET',
-        path: '/api/account/{id?}',
-        config: {
-            handler: accountGet
-        }
-    });
-
-    server.route({
-        method: 'GET',
-        path: '/api/account/nicknames/{id?}',
-        config: {
-            handler: accountNicknames
-        }
-    });
-
-    server.route({
-        method: 'GET',
-        path: '/api/account/certificates/{id?}',
-        config: {
-            handler: accountCertificates
-        }
-    });
-
-    server.route({
-        method: 'GET',
-        path: '/api/account/channels/{id?}',
-        config: {
-            handler: accountChannels
-        }
-    });
-
-    server.route({
-        method: 'POST',
-        path: '/api/account/verify',
-        config: {
-            handler: accountVerify
-        }
-    });
+    server.get('/api/account/{id?}', accountGet);
+    server.get('/api/account/nicknames/{id?}', accountNicknames);
+    server.get('/api/account/certificates/{id?}', accountCertificates);
+    server.get('/api/account/channels/{id?}', accountChannels);
+    server.post('/api/account/verify', accountVerify);
 };

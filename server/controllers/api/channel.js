@@ -1,12 +1,10 @@
-'use strict';
+let channelRepository = require('../../channelrepository.js');
+let Boom = require('boom');
 
-var channelRepository = require('../../channelrepository.js');
-var Boom = require('boom');
-
-var AKICK_LIST = 0;
-var INVEX_LIST = 2;
-var EXCEPT_LIST = 3;
-var QUIET_LIST = 4;
+let AKICK_LIST = 0;
+let INVEX_LIST = 2;
+let EXCEPT_LIST = 3;
+let QUIET_LIST = 4;
 
 function addPrivateProperties(channel, result) {
     channel.topic = result.topic;
@@ -16,18 +14,18 @@ function addPrivateProperties(channel, result) {
     return channel;
 }
 
-function channelGet(request, reply) {
-    var channelName = '#' + request.params.name;
+function channelGet(req, res) {
+    let channelName = '#' + req.params.name;
     channelRepository.getByName(channelName, function(result) {
         if(!result) {
-            return reply(Boom.notFound('Channel not found'));
+            return res.send(Boom.notFound('Channel not found'));
         }
 
-        if(!request.auth.isAuthenticated && result.flag_private) {
-            return reply(Boom.forbidden('Not authorised'));
+        if(!req.user && result.flag_private) {
+            return res.send(Boom.forbidden('Not authorised'));
         }
 
-        var channel = {
+        let channel = {
             name: result.channel,
             description: result.description,
             regTime: result.reg_time,
@@ -46,49 +44,49 @@ function channelGet(request, reply) {
             autoSave: result.flag_autosave
         };
 
-        if(!request.auth.isAuthenticated) {
-            return reply(channel);
+        if(!req.user) {
+            return res.send(channel);
         }
 
-        if(request.auth.credentials.admin) {
+        if(req.user.admin) {
             channel = addPrivateProperties(channel, result);
 
-            return reply(channel);
+            return res.send(channel);
         }
 
-        channelRepository.isOnAccessList(channelName, request.auth.credentials.id, function(isOn) {
+        channelRepository.isOnAccessList(channelName, req.user.id, function(isOn) {
             if(isOn) {
                 channel = addPrivateProperties(channel, result);
             }
 
-            return reply(channel);
+            return res.send(channel);
         });
     });
 }
 
-function channelAccessList(request, reply) {
-    var channel = '#' + request.params.name;
+function channelAccessList(req, res) {
+    let channel = '#' + req.params.name;
     channelRepository.getAccessList(channel, function(result) {
-        if(!result || !request.auth.isAuthenticated) {
-            return reply(Boom.notFound());
+        if(!result || !req.user) {
+            return res.send(Boom.notFound());
         }
 
-        if(request.auth.credentials.admin) {
-            return reply(result);
+        if(req.user.admin) {
+            return res.send(result);
         }
 
-        channelRepository.isOnAccessList(channel, request.auth.credentials.id, function(isOn) {
+        channelRepository.isOnAccessList(channel, req.user.id, function(isOn) {
             if(isOn) {
-                return reply(result);
+                return res.send(result);
             }
 
-            return reply(Boom.notFound());
+            return res.send(Boom.notFound());
         });
     });
 }
 
 function queryResp(func, type, request, reply) {
-    var channel = '#' + request.params.name;
+    let channel = '#' + request.params.name;
     func(channel, type, function(result) {
         if(!result || !request.auth.isAuthenticated) {
             return reply(Boom.notFound());
@@ -109,39 +107,10 @@ function queryResp(func, type, request, reply) {
 }
 
 module.exports.init = function(server) {
-    server.route({
-       method: 'GET',
-       path: '/api/channel/{name}',
-       handler: channelGet
-    });
-
-    server.route({
-        method: 'GET',
-        path: '/api/channel/{name}/access',
-        handler: channelAccessList
-    });
-
-    server.route({
-        method: 'GET',
-        path: '/api/channel/{name}/akicks',
-        handler: queryResp.bind(server, channelRepository.getList, AKICK_LIST)
-    });
-
-    server.route({
-        method: 'GET',
-        path: '/api/channel/{name}/quiets',
-        handler: queryResp.bind(server, channelRepository.getList, QUIET_LIST)
-    });
-
-    server.route({
-        method: 'GET',
-        path: '/api/channel/{name}/excepts',
-        handler: queryResp.bind(server, channelRepository.getList, EXCEPT_LIST)
-    });
-
-    server.route({
-        method: 'GET',
-        path: '/api/channel/{name}/invexes',
-        handler: queryResp.bind(server, channelRepository.getList, INVEX_LIST)
-    });
+    server.get('/api/channel/{name}', channelGet);
+    server.get('/api/channel/{name}/access', channelAccessList);
+    server.get('/api/channel/{name}/akicks', queryResp.bind(server, channelRepository.getList, AKICK_LIST));
+    server.get('/api/channel/{name}/quiets', queryResp.bind(server, channelRepository.getList, QUIET_LIST));
+    server.get('/api/channel/{name}/excepts', queryResp.bind(server, channelRepository.getList, EXCEPT_LIST));
+    server.get('/api/channel/{name}/invexes', queryResp.bind(server, channelRepository.getList, INVEX_LIST));
 };

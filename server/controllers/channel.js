@@ -49,34 +49,28 @@ module.exports.init = function(server) {
     });
 
     server.get('/channel/{name}/excepts', (res, req) => {
-        reply.view('channel/list', {
-            authenticated: request.auth.isAuthenticated,
-            admin: request.auth.credentials.admin,
+        res.render('channel/list', {
+            authenticated: !!req.user,
+            admin: req.user && req.user.admin,
             activeChannel: true,
             activeExceptList: true,
             sidebar: 'channel',
-            channelName: request.params.name,
+            channelName: req.params.name,
             list: 'excepts',
-            title: 'Excepts List - #' + request.params.name
+            title: 'Excepts List - #' + req.params.name
         });
     });
 
-    server.route({
-        method: 'GET',
-        path: '/channel/{name}/invexes',
-        config: {
-            handler: function(request, reply) {
-                reply.view('channel/list', {
-                    authenticated: request.auth.isAuthenticated,
-                    admin: request.auth.credentials.admin,
-                    activeChannel: true,
-                    activeInvexList: true,
-                    sidebar: 'channel',
-                    channelName: request.params.name,
-                    list: 'invexes',
-                    title: 'Invex List - #' + request.params.name
-                });
-            }
-        }
+    server.get('/channel/{name}/invexes', (req, res) => {
+        res.render('channel/list', {
+            authenticated: !!req.user,
+            admin: req.user && req.user.admin,
+            activeChannel: true,
+            activeInvexList: true,
+            sidebar: 'channel',
+            channelName: req.params.name,
+            list: 'invexes',
+            title: 'Invex List - #' + req.params.name
+        });
     });
 };

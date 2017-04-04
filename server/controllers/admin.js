@@ -20,8 +20,8 @@ module.exports.init = function(server) {
         });
     });
 
-    server.route('/admin/akills', (req, res) => {
-        reply.view('admin/akills', {
+    server.get('/admin/akills', (req, res) => {
+        res.render('admin/akills', {
             authenticated: !!req.user,
             admin: req.user && req.user.admin,
             activeAdmin: true,

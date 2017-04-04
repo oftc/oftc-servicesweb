@@ -1,9 +1,9 @@
-'use strict';
 
-var accountRepository = require('../../accountrepository.js');
-var adminRepository = require('../../adminrepository.js');
-var oData = require('odata-parser');
-var url = require('url');
+
+let accountRepository = require('../../accountrepository.js');
+let adminRepository = require('../../adminrepository.js');
+let oData = require('odata-parser');
+let url = require('url');
 
 function adminAdmins(request, reply) {
     accountRepository.getAdmins(function(result) {
@@ -11,32 +11,17 @@ function adminAdmins(request, reply) {
     });
 }
 
-function adminAKills(request, reply) {
-    var queryStr = url.parse(request.url).search ? url.parse(request.url).search.substr(1) : '$skip=0';
-    var odata = oData.parse(queryStr);
+function adminAKills(req, res) {
+    let queryStr = url.parse(req.url).search ? url.parse(req.url).search.substr(1) : '$skip=0';
+    let odata = oData.parse(queryStr);
     adminRepository.getAKills(odata, function(result) {
         adminRepository.getAKillsCount(function(count) {
-            reply({ totalCount: count, data: result });
+            res.send({ totalCount: count, data: result });
         });
     });
 }
 
 module.exports.init = function(server) {
-    server.route({
-        method: 'GET',
-        path: '/api/admin/admins',
-        config: {
-            plugins: { 'hapi-auth-jwt': { requiresAdmin: true } },
-            handler: adminAdmins
-        }
-    });
-
-    server.route({
-        method: 'GET',
-        path: '/api/admin/akills',
-        config: {
-            plugins: { 'hapi-auth-jwt': { requiresAdmin: true } },
-            handler: adminAKills
-        }
-    });
+    server.get('/api/admin/admins', adminAdmins);
+    server.get('/api/admin/akills', adminAKills);
 };

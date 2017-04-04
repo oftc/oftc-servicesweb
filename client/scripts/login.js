@@ -1,27 +1,26 @@
-/* global $, ko, location */
-
-'use strict';
+import ko from 'knockout';
+import $ from 'jquery';
 
 function LoginViewModel() {
-    var self = this;
+    this.username = ko.observable('');
+    this.password = ko.observable('');
+    this.errorMessage = ko.observable('');
 
-    self.username = ko.observable('');
-    self.password = ko.observable('');
-    self.errorMessage = ko.observable('');
-
-    self.login = function() {
-        $.post('/api/login', { nickname: self.username(), password: self.password() }, function(data) {
+    this.login = () => {
+        $.post('/api/login', { nickname: this.username(), password: this.password() }, data => {
             if(data.error) {
-                self.errorMessage(data.error);
+                this.errorMessage(data.error);
             }
             else {
                 location.href = '/';
             }
         })
-        .fail(function() {
-            self.errorMessage('An error occured submitting your information');
+        .fail(() => {
+            this.errorMessage('An error occured submitting your information');
         });
     };
 }
 
-ko.applyBindings(new LoginViewModel());
+$(() => {
+    ko.applyBindings(new LoginViewModel());
+});

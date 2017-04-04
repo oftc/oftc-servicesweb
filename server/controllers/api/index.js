@@ -1,9 +1,7 @@
-'use strict';
-
-var account = require('./account.js');
-var channel = require('./channel.js');
-var nickname = require('./nickname.js');
-var admin = require('./admin.js');
+const account = require('./account.js');
+const channel = require('./channel.js');
+const nickname = require('./nickname.js');
+const admin = require('./admin.js');
 
 module.exports.init = function(server) {
     account.init(server);

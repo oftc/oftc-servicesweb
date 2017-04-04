@@ -1,7 +1,7 @@
-/* global $, document */
+import 'bootstrap/dist/js/bootstrap';
+import $ from 'jquery';
+import login from './login.js';
 
-'use strict';
-
-$(document).ajaxSend(function(event, jqxhr, settings) {
+$(document).ajaxSend(function() {
 	// This will set up the authentication headers for the API
 });

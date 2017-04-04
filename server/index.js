@@ -1,92 +1,49 @@
-const Handlebars = require('handlebars');
-const Hapi = require('hapi');
-const Path = require('path');
-const Config = require('./config.js');
-const Controllers = require('./controllers');
+const config = require('./config.js');
+const controllers = require('./controllers');
+const express = require('express');
+const app = express();
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+const jwt = require('jsonwebtoken');
+const handlebars = require('express-handlebars');
+const path = require('path');
 
-let server = new Hapi.Server();
-server.connection(Config.listen);
+const logger = require('./log.js');
 
-server.register(require('./hapi-auth-jwt'), function(err) {
+app.use(cookieParser());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+
+let handlebarsInstance = handlebars.create({
+    defaultLayout: 'layout',
+    layoutsDir: path.join(__dirname, '../client/views/layout'),
+    partialsPath: path.join(__dirname, '../client/views/partials')
+});
+
+app.set('views', path.join(__dirname, '../client/views'));
+
+app.engine('handlebars', handlebarsInstance.engine);
+app.set('view engine', 'handlebars');
+
+app.use(express.static(__dirname + '/../public'));
+
+controllers.init(app);
+
+let port = process.env.NODE_ENV !== 'production' ? 4000 : process.env.PORT;
+
+app.listen(port, '0.0.0.0', function onStart(err) {
     if(err) {
-        console.info(err);
+        logger.error(err);
     }
-    server.auth.strategy('default', 'jwt', true, { requiresAdmin: false });
 
-    server.views({
-        engines: {
-            html: Handlebars.create()
-        },
-        path: Path.join(__dirname, '../client/views'),
-        layoutPath: Path.join(__dirname, '../client/views/layout'),
-        layout: true,
-        partialsPath: Path.join(__dirname, '../client/views/partials'),
-        isCached: false
+    logger.info('==> 🌎 Listening on port %s. Open up http://0.0.0.0:%s/ in your browser.', port, port);
+});
+
+app.get('/', (req, res) => {
+    res.render('index', {
+        authenticated: !!req.user,
+        admin: req.user && req.user.admin,
+        activeHome: true,
+        title: 'Home'
     });
-
-    server.route({
-        method: 'GET',
-        path: '/content/{filename}',
-        config: {
-            auth: { mode: 'try' },
-            files: {
-                relativeTo: Path.join(__dirname, '../client/content')
-            },
-            handler: {
-                file: function (request) {
-                    return request.params.filename;
-                }
-            }
-        }
-    });
-
-    server.route({
-        method: 'GET',
-        path: '/scripts/{filename*}',
-        config: {
-            auth: { mode: 'try' },
-            handler: {
-                directory: {
-                    path: Path.join(__dirname, '../client/scripts')
-                }
-            }
-        }
-    });
-
-    server.route({
-        method: 'GET',
-        path: '/fonts/{filename}',
-        config: {
-            auth: { mode: 'try' },
-            files: {
-                relativeTo: Path.join(__dirname, '../client/fonts')
-            }
-        },
-        handler: {
-            file: function (request) {
-                return request.params.filename;
-            }
-        }
-    });
-
-    Controllers.init(server);
-
-    server.route({
-        method: 'GET',
-        path: '/',
-        config: {
-            auth: { mode: 'try' },
-            handler: function (request, reply) {
-                reply.view('index', {
-                    authenticated: request.auth.isAuthenticated,
-                    admin: request.auth.credentials && request.auth.credentials.admin,
-                    activeHome: true,
-                    title: 'Home'
-                });
-            }
-        }
-    });
-
-    server.start();
-
 });

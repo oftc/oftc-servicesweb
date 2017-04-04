@@ -6,13 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="">
         <meta name="author" content="">
-        <link rel="stylesheet" href="/content/site.css">
-        <script src="/scripts/jquery.js"></script>
-        <script src="/scripts/bootstrap.js"></script>
-        <script src="/scripts/knockout.js"></script>
-        <script src="/scripts/knockout.mapping.js"></script>
-        <script src="/scripts/index.js"></script>
-        <script src="/scripts/moment.js"></script>
+        <script src="/bundle.js"></script>
         <base href="/">
 
         <link rel="icon" type="image/png" href="/content/oftc-16.png" />
@@ -72,7 +66,7 @@
             {{ else }}
             <div class="main col-sm-9 col-md-10">
             {{/ if }}
-                {{{ content }}}
+                {{{ body }}}
             </div>
         </div>
     </body>
