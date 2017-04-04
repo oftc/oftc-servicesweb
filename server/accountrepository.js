@@ -36,12 +36,16 @@ exports.getById = function(id, callback) {
                 'FROM account a ' +
                 'WHERE a.id = $1';
 
-    database.query(query, [id], function(result) {
-        if(result.length === 0) {
-            return callback(undefined);
+    database.query(query, [id], function(err, result) {
+        if(err) {
+            return callback(err);
         }
 
-        callback(result[0]);
+        if(result.length === 0) {
+            return callback(err, undefined);
+        }
+
+        callback(err, result[0]);
     });
 };
 
@@ -52,8 +56,12 @@ exports.getNicknames = function(id, callback) {
                 'WHERE a.id = $1 ' +
                 'ORDER BY n.nick';
 
-    database.query(query, [id], function(result) {
-        callback(result);
+    database.query(query, [id], function(err, result) {
+        if(err) {
+            return callback(err);
+        }
+
+        callback(err, result);
     });
 };
 
@@ -64,8 +72,12 @@ exports.getCertificates = function(id, callback) {
                 'LEFT OUTER JOIN nickname n ON f.nickname_id = n.id ' +
                 'WHERE a.id = $1';
 
-    database.query(query, [id], function(result) {
-        callback(result);
+    database.query(query, [id], function(err, result) {
+        if(err) {
+            return callback(err);
+        }
+
+        callback(err, result);
     });
 };
 
@@ -75,8 +87,12 @@ exports.getAdmins = function(callback) {
                 'INNER JOIN nickname n ON a.primary_nick = n.id ' +
                 'WHERE a.flag_admin = True';
 
-    database.query(query, [], function(result) {
-        callback(result);
+    database.query(query, [], function(err, result) {
+        if(err) {
+            return callback(err);
+        }
+
+        callback(err, result);
     });
 };
 
@@ -84,5 +100,5 @@ exports.accountSetVerified = function(id) {
     let query = 'UPDATE account SET flag_verified = true ' +
                 'WHERE id = $1 AND NOT flag_verified';
 
-    database.query(query, [id], function() {});
+    database.query(query, [id]);
 };

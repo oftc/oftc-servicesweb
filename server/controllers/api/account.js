@@ -5,11 +5,20 @@ const requestjs = require('request');
 const passport = require('passport');
 
 const config = require('../../config.js');
+const checkLoggedInNoRedirect = require('../../auth-middleware.js').checkLoggedInNoRedirect;
 
 function accountGet(req, res) {
     let id = req.user.id;
 
-    accountRepository.getById(id, function(result) {
+    accountRepository.getById(id, function(err, result) {
+        if(err) {
+            return res.boom.badImplementation('Database error');
+        }
+
+        if(!result) {
+            return res.boom.notFound();
+        }
+
         return res.send({
             primary_nickname: result.primary_nickname,
             cloak: result.cloak,
@@ -77,9 +86,9 @@ module.exports.init = function(server) {
     server.post('/api/login', passport.authenticate('local'), function(req, res) {
         res.send({ success: true, user: req.user, token: jwt.sign(req.user, config.tokenSecret) });
     });
-    server.get('/api/account/{id?}', accountGet);
-    server.get('/api/account/nicknames/{id?}', accountNicknames);
-    server.get('/api/account/certificates/{id?}', accountCertificates);
-    server.get('/api/account/channels/{id?}', accountChannels);
-    server.post('/api/account/verify', accountVerify);
+    server.get('/api/account', checkLoggedInNoRedirect, accountGet);
+    server.get('/api/account/nicknames/{id?}', checkLoggedInNoRedirect, accountNicknames);
+    server.get('/api/account/certificates/{id?}', checkLoggedInNoRedirect, accountCertificates);
+    server.get('/api/account/channels/{id?}', checkLoggedInNoRedirect, accountChannels);
+    server.post('/api/account/verify', checkLoggedInNoRedirect, accountVerify);
 };

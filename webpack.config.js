@@ -7,8 +7,15 @@ const LESS_DIR = path.resolve(__dirname, 'client/content');
 let config = {
     devtool: 'inline-source-map',
     entry: {
-        root: LESS_DIR + '/site.less',
-        index: path.join(__dirname, 'client/scripts/index.js'),
+        root: [
+            LESS_DIR + '/site.less',
+            path.join(__dirname, 'client/scripts/index.js')
+        ],
+        accountCertificates: path.join(__dirname, 'client/scripts/account/certificates.js'),
+        accountChannels: path.join(__dirname, 'client/scripts/account/channels.js'),
+        accountDetails: path.join(__dirname, 'client/scripts/account/details.js'),
+        accountNicknames: path.join(__dirname, 'client/scripts/account/nicknames.js'),
+        accountVerify: path.join(__dirname, 'client/scripts/account/verify.js'),
         nickname: path.join(__dirname, 'client/scripts/nickname/index.js'),
         nicknameDetails: path.join(__dirname, 'client/scripts/nickname/details.js'),
         login: path.join(__dirname, 'client/scripts/login.js')

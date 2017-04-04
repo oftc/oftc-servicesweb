@@ -6,7 +6,11 @@ module.exports.query = function(query, params, callback) {
     pg.connect(config.connectionString, function(err, client, done) {
         if(err) {
             logger.error('error fetching client from pool', err);
-            return callback(err);
+            if(callback) {
+                callback(err);
+            }
+
+            return;
         }
 
         client.query(query, params, function(err, result) {
@@ -14,10 +18,14 @@ module.exports.query = function(query, params, callback) {
 
             if(err) {
                 logger.error('error running query', err);
-                callback(err);
+                if(callback) {
+                    callback(err);
+                }                
             }
 
-            callback(null, result.rows);
+            if(callback) {        
+                callback(null, result.rows);
+            }
         });
     });
 };
