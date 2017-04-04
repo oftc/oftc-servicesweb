@@ -1,53 +1,33 @@
-'use strict';
-
 module.exports.init = function(server) {
-    server.route({
-        method: 'GET',
-        path: '/admin',
-        config: {
-            handler: function(request, reply) {
-                reply.view('admin/index', {
-                    authenticated: request.auth.isAuthenticated,
-                    admin: request.auth.credentials.admin,
-                    activeAdmin: true,
-                    sidebar: 'admin',
-                    title: 'Admin'
-                });
-            }
-        }
+    server.get('/admin', (req, res) => {
+        res.render('admin/index', {
+            authenticated: !!req.user,
+            admin: req.user && req.user.admin,
+            activeAdmin: true,
+            sidebar: 'admin',
+            title: 'Admin'
+        });
     });
 
-    server.route({
-        method: 'GET',
-        path: '/admin/admins',
-        config: {
-            handler: function(request, reply) {
-                reply.view('admin/admins', {
-                    authenticated: request.auth.isAuthenticated,
-                    admin: request.auth.credentials.admin,
-                    activeAdmin: true,
-                    activeAdminList: true,
-                    sidebar: 'admin',
-                    title: 'Admins List'
-                });
-            }
-        }
+    server.get('/admin/admins', (req, res) => {
+        res.render('admin/admins', {
+            authenticated: !!req.user,
+            admin: req.user && req.user.admin,
+            activeAdmin: true,
+            activeAdminList: true,
+            sidebar: 'admin',
+            title: 'Admins List'
+        });
     });
 
-    server.route({
-        method: 'GET',
-        path: '/admin/akills',
-        config: {
-            handler: function(request, reply) {
-                reply.view('admin/akills', {
-                    authenticated: request.auth.isAuthenticated,
-                    admin: request.auth.credentials.admin,
-                    activeAdmin: true,
-                    activeAKillList: true,
-                    sidebar: 'admin',
-                    title: 'AKill List'
-                });
-            }
-        }
+    server.route('/admin/akills', (req, res) => {
+        reply.view('admin/akills', {
+            authenticated: !!req.user,
+            admin: req.user && req.user.admin,
+            activeAdmin: true,
+            activeAKillList: true,
+            sidebar: 'admin',
+            title: 'AKill List'
+        });
     });
 };
