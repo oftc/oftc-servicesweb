@@ -1,13 +1,14 @@
-/* global ko, location */
+import ko from 'knockout';
+import $ from 'jquery';
 
-'use strict';
+function NicknameViewModel() {
+    this.nickname = ko.observable('');
 
-var nicknameViewModel = {
-    nickname: ko.observable(''),
-
-    search: function() {
+    this.search = () => {
         location.href = '/nickname/' + this.nickname();
-    }
-};
+    };
+}
 
-ko.applyBindings(nicknameViewModel);
+$(() => {
+    ko.applyBindings(new NicknameViewModel());
+});

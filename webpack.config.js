@@ -1,27 +1,23 @@
-var webpack = require('webpack');
-var path = require('path');
+const webpack = require('webpack');
+const path = require('path');
 
-var BUILD_DIR = path.resolve(__dirname, 'public');
-var LESS_DIR = path.resolve(__dirname, 'client/content');
+const BUILD_DIR = path.resolve(__dirname, 'public');
+const LESS_DIR = path.resolve(__dirname, 'client/content');
 
-var config = {
+let config = {
     devtool: 'inline-source-map',
-    entry: [
-        // 'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=2000',
-        // 'webpack/hot/only-dev-server',
-        path.join(__dirname, 'client/scripts/index.js'),
-        LESS_DIR + '/site.less'
-    ],
+    entry: {
+        root: LESS_DIR + '/site.less',
+        index: path.join(__dirname, 'client/scripts/index.js'),
+        nickname: path.join(__dirname, 'client/scripts/nickname/index.js'),
+        nicknameDetails: path.join(__dirname, 'client/scripts/nickname/details.js'),
+        login: path.join(__dirname, 'client/scripts/login.js')
+    },
     output: {
         path: BUILD_DIR,
-        filename: 'bundle.js',
+        filename: '[name]-bundle.js',
         publicPath: '/'
-    },
-    devServer: {
-        hot: true,
-        contentBase: BUILD_DIR,
-        publicPath: '/'
-    },    
+    }, 
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NamedModulesPlugin(),
@@ -32,7 +28,8 @@ var config = {
         }),
         new webpack.ProvidePlugin({
             $: 'jquery',
-            jQuery: 'jquery'
+            jQuery: 'jquery',
+            moment: 'moment'
         })
     ],
     module: {

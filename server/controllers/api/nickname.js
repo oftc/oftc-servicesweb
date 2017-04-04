@@ -1,10 +1,13 @@
 const nicknameRepository = require('../../nicknamerepository.js');
-const Boom = require('boom');
 
 function nicknameGet(req, res) {
-    nicknameRepository.getByName(req.params.name, function(result) {
+    nicknameRepository.getByName(req.params.name, function(err, result) {
+        if(err) {
+            return res.boom.badImplementation('A server error occured');
+        }   
+        
         if(!result) {
-            return res.send(Boom.notFound());
+            return res.boom.notFound();
         }
 
         if((req.user && req.user.admin) || !result.flag_private) {
@@ -21,10 +24,10 @@ function nicknameGet(req, res) {
             return res.send(nick);
         }
 
-        return res.send(Boom.notFound());
+        return res.boom.notFound();
     });
 }
 
 module.exports.init = function(server) {
-    server.get('/api/nickname/{name}', nicknameGet);
+    server.get('/api/nickname/:name', nicknameGet);
 };

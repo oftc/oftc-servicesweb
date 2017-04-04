@@ -1,5 +1,5 @@
 module.exports.init = function(server) {
-    server.get('/nickname/{name}', (req, res) => {
+    server.get('/nickname/:name', (req, res) => {
         res.render('nickname/details', {
             authenticated: !!req.user,
             admin: req.user && req.user.admin,

@@ -11,7 +11,7 @@
         <dt>Last Host:</dt>
         <dd data-bind="text: lastHost"></dd>
         <dt>Last Quit Time:</dt>
-        <dd data-bind="text: moment.unix(lastQuitTime()).format('Do MMMM YYYY hh:mm') + ' (' + moment.unix(lastQuitTime()).fromNow() + ')'"></dd>
+        <dd data-bind="text: formattedLastQuitTime()"></dd>
         <!-- ko if: lastQuitMessage -->
         <dt>Last Quit Message:</dt>
         <dd data-bind="text: lastQuitMessage"></dd>
@@ -19,9 +19,10 @@
         <dt>Last Real Name:</dt>
         <dd data-bind="text: lastRealname"></dd>
         <dt>Registered:</dt>
-        <dd data-bind="text: moment.unix(regTime()).format('Do MMMM YYYY hh:mm') + ' (' + moment.unix(regTime()).fromNow() + ')'"></dd>
+        <dd data-bind="text: formattedRegTime()"></dd>
     </dl>
 </div>
 
 <script>window.Nickname = '{{ nickname }}';</script>
-<script src="/scripts/nickname/details.js"></script>
+
+<script src="/nicknameDetails-bundle.js"></script>

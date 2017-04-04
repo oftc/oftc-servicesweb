@@ -1,53 +1,10 @@
 const accountRepository = require('../../accountrepository.js');
 const channelRepository = require('../../channelrepository.js');
-const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const requestjs = require('request');
+const passport = require('passport');
+
 const config = require('../../config.js');
-
-function accountLogin(req, res) {
-    let nickname = {
-        id: 12345 + '',
-        nickname: 'test',
-        email: 'test@example.com',
-        admin: false
-    };
-
-    nickname.token = jwt.sign('test', config.tokenSecret);
-
-    res.cookie('authToken', nickname.token);
-    res.send(nickname);
-
-    // accountRepository.getByNick(req.body.nickname, (err, result) => {
-    //     if(err) {
-    //         return res.send({ error: 'A server error occured verifying your details'});
-    //     }
-
-    //     if(!result) {
-    //         return res.send({ error: 'Invalid username or password' });
-    //     }
-
-    //     let shasum = crypto.createHash('sha1');
-    //     shasum.update(req.body.password + result.salt);
-    //     let hash = shasum.digest('hex').toUpperCase();
-
-    //     if(hash !== result.password.toUpperCase()) {
-    //         return res.send({ error: 'Invalid username or password' });
-    //     }
-
-    //     let nickname = {
-    //         id: result.id + '',
-    //         nickname: result.nick,
-    //         email: result.email,
-    //         admin: result.flag_admin
-    //     };
-
-    //     nickname.token = jwt.sign(nickname, config.tokenSecret);
-
-    //     res.send(nickname);
-    //     res.cookie('authToken', nickname.token);
-    // });
-}
 
 function accountGet(req, res) {
     let id = req.user.id;
@@ -117,7 +74,9 @@ function accountVerify(req, res) {
 }
 
 module.exports.init = function(server) {
-    server.post('/api/login', accountLogin);
+    server.post('/api/login', passport.authenticate('local'), function(req, res) {
+        res.send({ success: true, user: req.user, token: jwt.sign(req.user, config.tokenSecret) });
+    });
     server.get('/api/account/{id?}', accountGet);
     server.get('/api/account/nicknames/{id?}', accountNicknames);
     server.get('/api/account/certificates/{id?}', accountCertificates);

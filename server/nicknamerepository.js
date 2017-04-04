@@ -7,7 +7,11 @@ exports.getByName = function(name, callback) {
                 'INNER JOIN nickname n ON n.account_id = a.id ' +
                 'WHERE LOWER(n.nick) = LOWER($1)';
 
-    database.query(query, [name], function(result) {
-        callback(result[0]);
+    database.query(query, [name], function(err, result) {
+        if(err) {
+            return callback(err);
+        }
+        
+        callback(err, result[0]);
     });
 };
