@@ -1,2 +1,5 @@
 node_modules
 server/config.js
+public/*.js
+public/*.svg
+logs
