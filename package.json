@@ -11,9 +11,9 @@
   "dependencies": {
     "boom": "^2.8.0",
     "bootstrap": "^3.3.5",
-    "handlebars": "^3.0.3",
-    "hapi": "^8.8.0",
-    "jquery": "^2.1.4",
+    "handlebars": "^4.0.0",
+    "hapi": "^11.0.0",
+    "jquery": "^3.0.0",
     "jsonwebtoken": "^5.0.4",
     "knockout": "^3.3.0",
     "knockout-mapping": "^2.5.0",
